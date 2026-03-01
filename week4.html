@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 4: Data Validation & Named Ranges</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .excel-table th { background-color: #0369a1; color: white; padding: 12px; border: 1px solid #cbd5e1; text-align: left; font-size: 0.85rem; }
+        .excel-table td { border: 1px solid #cbd5e1; padding: 8px; font-family: 'Consolas', monospace; font-size: 0.8rem; vertical-align: middle; }
+        .excel-table tr:nth-child(even) { background-color: #f0f9ff; }
+        .step-card { border-left: 4px solid #0369a1; padding-left: 1rem; margin-bottom: 1.5rem; }
+        .challenge-box { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 1px dashed #0369a1; }
+        .formula-badge { background-color: #f8fafc; border-radius: 4px; padding: 2px 6px; font-weight: bold; font-family: monospace; color: #0369a1; border: 1px solid #cbd5e1; }
+        .drop-down-ui { position: relative; background-color: white; border: 1px solid #cbd5e1; padding: 4px 8px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .drop-down-ui::after { content: '▼'; font-size: 0.6rem; color: #64748b; }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8 font-sans">
+
+    <div class="max-w-6xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden">
+        <!-- Header -->
+        <div class="bg-[#0369a1] p-8 text-white">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold">Latihan Pertemuan 4: System Integrity</h1>
+                    <p class="opacity-80 mt-2">Objektif: Merancang Sistem Input Anti-Error dengan Data Validation</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-white/20 px-4 py-2 rounded-full text-sm font-semibold">Durasi: 90 Menit</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alokasi Waktu Aktivitas -->
+        <div class="p-6 grid md:grid-cols-4 gap-4 border-b bg-gray-50 text-center">
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus A</p>
+                <p class="text-xs">Basic Validation (Date & Numbers)</p>
+            </div>
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus B</p>
+                <p class="text-xs">Named Range Setup (Kategori)</p>
+            </div>
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus C</p>
+                <p class="text-xs">Dependent Drop-down (INDIRECT)</p>
+            </div>
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus D</p>
+                <p class="text-xs">Custom Error Alert</p>
+            </div>
+        </div>
+
+        <!-- Instruksi Kerja -->
+        <div class="p-8">
+            <h2 class="text-xl font-bold mb-6 text-gray-800 italic">"Anda diminta membangun Formulir Pemesanan Barang yang mencegah staf gudang salah memasukkan nama produk atau jumlah pesanan yang tidak masuk akal."</h2>
+            
+            <div class="space-y-6">
+                <!-- Task A -->
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-sky-900">Tugas 1: Validasi Tanggal & Jumlah</h3>
+                    <p class="text-sm text-gray-600 mb-3">Atur agar kolom 'Tanggal Pesan' hanya menerima tanggal hari ini atau kedepan (<span class="formula-badge">>=TODAY()</span>) dan kolom 'Qty' minimal angka 1.</p>
+                </div>
+
+                <!-- Task B & C -->
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-sky-900">Tugas 2: Hierarki Produk (Dependent Drop-down)</h3>
+                    <p class="text-sm text-gray-600 mb-3">Langkah-langkah:</p>
+                    <ol class="list-decimal ml-5 text-sm text-gray-600 space-y-2">
+                        <li>Buat daftar kategori (Elektronik, Fashion, ATK) di sheet referensi.</li>
+                        <li>Gunakan <strong>Name Manager</strong> untuk memberi nama masing-masing range produk sesuai kategorinya.</li>
+                        <li>Di formulir utama, gunakan Data Validation tipe <strong>List</strong> dengan rumus: <span class="formula-badge">=INDIRECT(sel_kategori)</span> pada kolom Produk.</li>
+                    </ol>
+                </div>
+
+                <!-- Task D -->
+                <div class="challenge-box p-6 rounded-lg">
+                    <h3 class="font-bold text-lg text-sky-900 flex items-center">
+                        <span class="mr-2">🛑</span> Professional UI: Error Alert
+                    </h3>
+                    <p class="text-sm text-sky-800 mt-2">
+                        Jangan biarkan Excel mengeluarkan pesan error standar. Ubah di tab <strong>Error Alert</strong> menjadi: <br>
+                        <em>Title:</em> "Kategori Tidak Sesuai" <br>
+                        <em>Error Message:</em> "Produk yang Anda ketik tidak tersedia dalam kategori tersebut. Silakan pilih dari daftar yang tersedia."
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reference Master Data -->
+        <div class="p-8 bg-sky-50 border-t border-sky-200">
+            <h3 class="font-bold text-sky-800 mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                Master Referensi (Data untuk Named Ranges)
+            </h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div>
+                    <p class="text-xs font-bold text-sky-700 mb-2">Kategori: ELEKTRONIK</p>
+                    <table class="w-full excel-table">
+                        <tbody>
+                            <tr><td>Laptop</td></tr><tr><td>Mouse</td></tr><tr><td>Monitor</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-sky-700 mb-2">Kategori: FASHION</p>
+                    <table class="w-full excel-table">
+                        <tbody>
+                            <tr><td>Kemeja</td></tr><tr><td>Celana</td></tr><tr><td>Sepatu</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-sky-700 mb-2">Kategori: ATK</p>
+                    <table class="w-full excel-table">
+                        <tbody>
+                            <tr><td>Kertas A4</td></tr><tr><td>Pulpen</td></tr><tr><td>Buku Nota</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise Area -->
+        <div class="p-8 bg-gray-50 border-t">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-gray-700">Formulir Pesanan (Target Simulasi)</h3>
+                <button onclick="copyValidationData()" class="bg-sky-700 hover:bg-sky-800 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-lg transition flex items-center">
+                    Salin Dataset Referensi
+                </button>
+            </div>
+            
+            <div class="overflow-x-auto border border-gray-300 rounded-lg bg-white">
+                <table class="w-full excel-table">
+                    <thead>
+                        <tr>
+                            <th>Tgl Pesan</th><th>Kategori</th><th>Produk</th><th>Qty</th><th>Status Validasi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>[Input Date]</td>
+                            <td><div class="drop-down-ui text-[0.6rem] text-gray-400">Pilih Kategori</div></td>
+                            <td><div class="drop-down-ui text-[0.6rem] text-gray-400">Pilih Produk</div></td>
+                            <td>[1-100]</td>
+                            <td class="text-center italic text-gray-400 font-sans">Simulasikan di Excel</td>
+                        </tr>
+                        <tr>
+                            <td>...</td><td>...</td><td>...</td><td>...</td><td>...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p id="msg" class="text-center mt-3 text-sky-700 font-bold hidden text-sm">Data referensi berhasil disalin! Siapkan 3 Named Ranges di Excel.</p>
+        </div>
+    </div>
+
+    <script>
+        function copyValidationData() {
+            const data = "DAFTAR KATEGORI\nElektronik\nFashion\nATK\n\nDETAIL PRODUK\nELEKTRONIK: Laptop, Mouse, Monitor\nFASHION: Kemeja, Celana, Sepatu\nATK: Kertas A4, Pulpen, Buku Nota";
+            const el = document.createElement('textarea');
+            el.value = data;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            const msg = document.getElementById('msg');
+            msg.classList.remove('hidden');
+            setTimeout(() => msg.classList.add('hidden'), 5000);
+        }
+    </script>
+</body>
+</html>

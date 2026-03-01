@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 2: VLOOKUP vs INDEX & MATCH</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .excel-table th { background-color: #1e40af; color: white; padding: 12px; border: 1px solid #cbd5e1; text-align: left; font-size: 0.85rem; }
+        .excel-table td { border: 1px solid #cbd5e1; padding: 8px; font-family: 'Consolas', monospace; font-size: 0.8rem; vertical-align: middle; }
+        .excel-table tr:nth-child(even) { background-color: #eff6ff; }
+        .step-card { border-left: 4px solid #1e40af; padding-left: 1rem; margin-bottom: 1.5rem; }
+        .challenge-box { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px dashed #1e40af; }
+        .formula-badge { background-color: #f8fafc; border-radius: 4px; padding: 2px 6px; font-weight: bold; font-family: monospace; color: #1e40af; border: 1px solid #cbd5e1; }
+        .tab-ref { background-color: #fff7ed; border: 1px solid #fdba74; }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8 font-sans">
+
+    <div class="max-w-6xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden">
+        <!-- Header -->
+        <div class="bg-[#1e40af] p-8 text-white">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold">Latihan Pertemuan 2: Retrieval Mastery</h1>
+                    <p class="opacity-80 mt-2">Objektif: Evaluasi Efisiensi VLOOKUP vs. INDEX & MATCH</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-white/20 px-4 py-2 rounded-full text-sm font-semibold">Durasi: 90 Menit</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alokasi Waktu Aktivitas -->
+        <div class="p-6 grid md:grid-cols-3 gap-4 border-b bg-gray-50">
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus A: VLOOKUP</p>
+                <p class="text-sm">20 Menit: Pencarian Standar ke Arah Kanan</p>
+            </div>
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus B: INDEX-MATCH</p>
+                <p class="text-sm">30 Menit: Solusi Pencarian "Lookup ke Kiri"</p>
+            </div>
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus C: 2-Way Lookup</p>
+                <p class="text-sm">40 Menit: Pencarian Baris & Kolom Sekaligus</p>
+            </div>
+        </div>
+
+        <!-- Instruksi Kerja -->
+        <div class="p-8">
+            <h2 class="text-xl font-bold mb-6 text-gray-800 italic">"Gudang Utama PT. Global Logistik memiliki database yang tidak ideal. ID Barang diletakkan di tengah tabel, sehingga VLOOKUP gagal mengambil data di sebelah kirinya. Gunakan INDEX & MATCH untuk menyelesaikan masalah ini."</h2>
+            
+            <div class="space-y-8">
+                <!-- Task A -->
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-blue-800">Tugas 1: Pencarian Standar (VLOOKUP)</h3>
+                    <p class="text-sm text-gray-600 mb-3">Ambil 'Lokasi Gudang' berdasarkan 'ID Barang'. Karena lokasi berada di sebelah kanan ID, VLOOKUP masih bisa digunakan.</p>
+                    <div class="bg-gray-50 p-4 rounded text-xs font-mono border">
+                        Rumus: <span class="formula-badge">=IFERROR(VLOOKUP(sel_id, range_master, kolom_lokasi, 0), "Data Tidak Tersedia")</span>
+                    </div>
+                </div>
+
+                <!-- Task B -->
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-blue-800">Tugas 2: Pencarian ke Kiri (INDEX & MATCH)</h3>
+                    <p class="text-sm text-gray-600 mb-3">Ambil 'Nama Supplier' berdasarkan 'ID Barang'. Perhatikan bahwa Supplier berada di kolom sebelah kiri ID Barang. VLOOKUP akan menghasilkan error #N/A di sini.</p>
+                    <div class="bg-gray-50 p-4 rounded text-xs font-mono border">
+                        Rumus: <span class="formula-badge">=INDEX(kolom_supplier, MATCH(sel_id, kolom_id_barang, 0))</span>
+                    </div>
+                </div>
+
+                <!-- Task C -->
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-blue-800">Tugas 3: Pencarian Dua Arah (Double Match)</h3>
+                    <p class="text-sm text-gray-600 mb-3">Cari harga berdasarkan 'ID Barang' (Vertikal) DAN 'Ukuran' (Horizontal: Small, Medium, Large) pada tabel harga terpisah.</p>
+                    <div class="bg-gray-50 p-4 rounded text-xs font-mono border">
+                        Rumus: <span class="formula-badge">=INDEX(tabel_harga, MATCH(id, kolom_id, 0), MATCH(size, baris_header, 0))</span>
+                    </div>
+                </div>
+
+                <!-- Named Range Tips -->
+                <div class="challenge-box p-6 rounded-lg">
+                    <h3 class="font-bold text-lg text-blue-900 flex items-center">
+                        <span class="mr-2">💡</span> Pro Tip: Named Ranges
+                    </h3>
+                    <p class="text-sm text-blue-800 mt-2">
+                        Seleksi tabel Master Anda, tekan <span class="formula-badge">Ctrl + F3</span> atau ketik langsung di <strong>Name Box</strong> (pojok kiri atas) dengan nama "MasterData". Rumus Anda akan menjadi lebih mudah dibaca: <span class="formula-badge">=VLOOKUP(A2, MasterData, 3, 0)</span>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Master Table (Reference) -->
+        <div class="p-8 bg-orange-50 border-t border-orange-200">
+            <h3 class="font-bold text-orange-800 mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.58 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.58 4 8 4s8-1.79 8-4M4 7c0-2.21 3.58-4 8-4s8 1.79 8 4m0 5c0 2.21-3.58 4-8 4s-8-1.79-8-4"></path></svg>
+                Tabel Master (Referensi Utama)
+            </h3>
+            <div class="overflow-x-auto rounded-lg border border-orange-300">
+                <table class="w-full excel-table">
+                    <thead>
+                        <tr>
+                            <th class="tab-ref italic">Nama Supplier (Kiri)</th>
+                            <th class="tab-ref font-bold underline">ID BARANG (Kunci)</th>
+                            <th class="tab-ref italic">Lokasi Gudang (Kanan)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="masterTable">
+                        <!-- Filled by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Exercise Area -->
+        <div class="p-8 bg-gray-50 border-t">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-gray-700">Lembar Kerja Transaksi (100 Baris)</h3>
+                <button onclick="copyRetrievalData()" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-lg transition flex items-center">
+                    Salin Semua Data (A1)
+                </button>
+            </div>
+            
+            <div class="h-80 overflow-y-auto border border-gray-300 rounded-lg bg-white">
+                <table class="w-full excel-table">
+                    <thead class="sticky top-0">
+                        <tr>
+                            <th>ID Barang</th><th>Ukuran</th><th>Supplier (INDEX-MATCH)</th><th>Lokasi (VLOOKUP)</th><th>Harga (2-Way)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="exerciseTable">
+                        <!-- Generated by JS -->
+                    </tbody>
+                </table>
+            </div>
+            <p id="msg" class="text-center mt-3 text-blue-600 font-bold hidden text-sm">Berhasil disalin! Jangan lupa kunci sel ($) atau gunakan Named Range.</p>
+        </div>
+    </div>
+
+    <script>
+        const masterData = [
+            {id: "B-001", supplier: "Global Tech", loc: "A-12"},
+            {id: "B-002", supplier: "Indo Jaya", loc: "B-05"},
+            {id: "B-003", supplier: "Sinar Abadi", loc: "A-01"},
+            {id: "B-004", supplier: "Maju Bersama", loc: "C-10"},
+            {id: "B-005", supplier: "Sumber Rejeki", loc: "B-09"}
+        ];
+
+        const sizes = ["Small", "Medium", "Large"];
+        
+        // Fill Master Table
+        let masterHtml = "";
+        let masterRaw = "Nama Supplier\tID BARANG\tLokasi Gudang\n";
+        masterData.forEach(d => {
+            masterHtml += `<tr><td>${d.supplier}</td><td class="font-bold text-blue-700">${d.id}</td><td>${d.loc}</td></tr>`;
+            masterRaw += `${d.supplier}\t${d.id}\t${d.loc}\n`;
+        });
+        document.getElementById('masterTable').innerHTML = masterHtml;
+
+        // Fill Exercise Table
+        let exerciseHtml = "";
+        let exerciseRaw = "ID Barang\tUkuran\tSupplier\tLokasi\tHarga\n";
+        for(let i=1; i<=100; i++) {
+            let item = masterData[i % masterData.length];
+            let size = sizes[i % sizes.length];
+            exerciseHtml += `<tr>
+                <td>${item.id}</td>
+                <td>${size}</td>
+                <td class="text-gray-400 italic">...</td>
+                <td class="text-gray-400 italic">...</td>
+                <td class="text-gray-400 italic">...</td>
+            </tr>`;
+            exerciseRaw += `${item.id}\t${size}\t\t\t\n`;
+        }
+        document.getElementById('exerciseTable').innerHTML = exerciseHtml;
+
+        // Pricing Matrix for 2-Way Lookup
+        let priceRaw = "\nTABEL HARGA (2-WAY LOOKUP REFERENCE)\nID Barang\tSmall\tMedium\tLarge\n";
+        masterData.forEach(d => {
+            priceRaw += `${d.id}\t50000\t75000\t100000\n`;
+        });
+
+        function copyRetrievalData() {
+            const el = document.createElement('textarea');
+            el.value = "=== TABEL MASTER ===\n" + masterRaw + "\n=== LEMBAR KERJA ===\n" + exerciseRaw + priceRaw;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            const msg = document.getElementById('msg');
+            msg.classList.remove('hidden');
+            setTimeout(() => msg.classList.add('hidden'), 5000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 5: Advanced PivotTables & Slicers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .excel-table th { background-color: #1e293b; color: white; padding: 12px; border: 1px solid #cbd5e1; text-align: left; font-size: 0.85rem; }
+        .excel-table td { border: 1px solid #cbd5e1; padding: 8px; font-family: 'Consolas', monospace; font-size: 0.8rem; vertical-align: middle; }
+        .excel-table tr:nth-child(even) { background-color: #f8fafc; }
+        .step-card { border-left: 4px solid #1e293b; padding-left: 1rem; margin-bottom: 1.5rem; }
+        .challenge-box { background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 1px dashed #1e293b; }
+        .feature-badge { background-color: #e2e8f0; border-radius: 4px; padding: 2px 8px; font-weight: bold; font-family: sans-serif; color: #1e293b; font-size: 0.75rem; }
+        .slicer-ui { background-color: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; padding: 10px; width: 150px; }
+        .slicer-item { background-color: white; border: 1px solid #94a3b8; margin-bottom: 4px; padding: 2px 8px; font-size: 0.7rem; cursor: pointer; }
+        .slicer-item.active { background-color: #1e293b; color: white; }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8 font-sans">
+
+    <div class="max-w-6xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden">
+        <!-- Header -->
+        <div class="bg-[#1e293b] p-8 text-white">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold">Latihan Pertemuan 5: Interactive Reporting</h1>
+                    <p class="opacity-80 mt-2">Objektif: Menguasai Advanced PivotTables, Grouping, dan Slicers</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-white/20 px-4 py-2 rounded-full text-sm font-semibold">Durasi: 90 Menit</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alokasi Waktu Aktivitas -->
+        <div class="p-6 grid md:grid-cols-4 gap-4 border-b bg-gray-50 text-center">
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus A</p>
+                <p class="text-xs">Quarterly Summary (Grouping)</p>
+            </div>
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus B</p>
+                <p class="text-xs">Growth Analysis (% Difference)</p>
+            </div>
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus C</p>
+                <p class="text-xs">Regional Slicers (Filtering)</p>
+            </div>
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus D</p>
+                <p class="text-xs">Professional Design & Layout</p>
+            </div>
+        </div>
+
+        <!-- Instruksi Kerja -->
+        <div class="p-8">
+            <h2 class="text-xl font-bold mb-6 text-gray-800 italic">"Anda adalah seorang Data Analyst. Manajemen ingin melihat performa penjualan per kuartal dan pertumbuhan bulanan secara interaktif tanpa harus membuat grafik manual yang rumit."</h2>
+            
+            <div class="space-y-6">
+                <!-- Task A -->
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-slate-900 text-sm md:text-base">Tugas 1: Ringkasan Periodik (Grouping)</h3>
+                    <p class="text-sm text-gray-600 mb-3">Gunakan fitur <span class="feature-badge">Right Click > Group</span> pada kolom Tanggal untuk mengelompokkan data menjadi <strong>Months</strong> dan <strong>Quarters</strong>.</p>
+                </div>
+
+                <!-- Task B -->
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-slate-900 text-sm md:text-base">Tugas 2: Analisis Pertumbuhan (Comparison)</h3>
+                    <p class="text-sm text-gray-600 mb-3">Tampilkan tren naik/turun penjualan bulanan:</p>
+                    <ul class="list-disc ml-5 text-sm text-gray-600 space-y-1">
+                        <li>Klik kanan pada nilai di PivotTable > <span class="feature-badge">Show Values As</span></li>
+                        <li>Pilih <span class="feature-badge">% Difference From...</span></li>
+                        <li>Base Field: <strong>Tanggal</strong> | Base Item: <strong>(Previous)</strong></li>
+                    </ul>
+                </div>
+
+                <!-- Task C -->
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-slate-900 text-sm md:text-base">Tugas 3: Dashboard Interaktif (Slicers)</h3>
+                    <p class="text-sm text-gray-600 mb-3">Tambahkan elemen filter visual melalui menu <span class="feature-badge">PivotTable Analyze > Insert Slicer</span>. Pilih field <strong>Wilayah</strong> dan <strong>Kategori</strong>.</p>
+                </div>
+
+                <!-- Task D -->
+                <div class="challenge-box p-6 rounded-lg">
+                    <h3 class="font-bold text-lg text-slate-900 flex items-center">
+                        <span class="mr-2">🎨</span> Professional Layout Design
+                    </h3>
+                    <p class="text-sm text-slate-800 mt-2">
+                        Ubah desain PivotTable melalui tab <strong>Design</strong>:
+                    </p>
+                    <ul class="list-disc ml-5 text-xs text-slate-700 mt-2 space-y-1">
+                        <li>Gunakan <span class="feature-badge">Report Layout: Tabular Form</span> agar header kolom terlihat jelas.</li>
+                        <li>Aktifkan <span class="feature-badge">Banded Rows</span> untuk kemudahan membaca.</li>
+                        <li>Format angka menjadi <strong>Currency (IDR)</strong> dengan 0 desimal.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise Area -->
+        <div class="p-8 bg-gray-50 border-t">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                <div>
+                    <h3 class="font-bold text-gray-700">Database Transaksi Tahunan (Raw Data)</h3>
+                    <p class="text-xs text-gray-500 italic">Gunakan data di bawah ini sebagai sumber (source) PivotTable Anda.</p>
+                </div>
+                <button onclick="copyPivotData()" class="bg-slate-800 hover:bg-slate-900 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-lg transition flex items-center">
+                    Salin Dataset Transaksi (500+ Baris)
+                </button>
+            </div>
+            
+            <div class="grid md:grid-cols-4 gap-6">
+                <!-- Preview Slicer UI -->
+                <div class="hidden md:block">
+                    <p class="text-[0.6rem] font-bold text-gray-400 uppercase mb-2">Slicer Preview</p>
+                    <div class="slicer-ui shadow-inner">
+                        <p class="text-[0.6rem] font-bold text-slate-500 border-b pb-1 mb-2">WILAYAH</p>
+                        <div class="slicer-item active">Jawa Tengah</div>
+                        <div class="slicer-item">Jawa Barat</div>
+                        <div class="slicer-item">Jawa Timur</div>
+                        <div class="slicer-item">Sumatera</div>
+                    </div>
+                </div>
+
+                <!-- Table Preview -->
+                <div class="md:col-span-3 h-80 overflow-y-auto border border-gray-300 rounded-lg bg-white">
+                    <table class="w-full excel-table">
+                        <thead class="sticky top-0">
+                            <tr>
+                                <th>ID Transaksi</th><th>Tanggal</th><th>Wilayah</th><th>Kategori</th><th>Produk</th><th>Total Penjualan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pivotDataTable">
+                            <!-- JS Generated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <p id="msg" class="text-center mt-3 text-slate-700 font-bold hidden text-sm">Dataset disalin! Tips: Setelah Paste di Excel, gunakan Ctrl+T (Table) sebelum membuat PivotTable.</p>
+        </div>
+    </div>
+
+    <script>
+        const regions = ["Jawa Barat", "Jawa Tengah", "Jawa Timur", "Sumatera Utara", "Bali"];
+        const categories = ["Elektronik", "Furniture", "Alat Tulis", "Kebutuhan Pokok"];
+        const products = {
+            "Elektronik": ["Laptop", "Mouse", "Keyboard"],
+            "Furniture": ["Meja Kerja", "Kursi Kantor", "Lemari"],
+            "Alat Tulis": ["Kertas A4", "Pulpen", "Buku"],
+            "Kebutuhan Pokok": ["Beras 5kg", "Minyak Goreng", "Gula"]
+        };
+
+        let html = "";
+        let raw = "ID_Transaksi\tTanggal\tWilayah\tKategori\tProduk\tTotal_Penjualan\n";
+
+        for(let i=1; i<=150; i++) {
+            let reg = regions[Math.floor(Math.random() * regions.length)];
+            let cat = categories[Math.floor(Math.random() * categories.length)];
+            let prod = products[cat][Math.floor(Math.random() * products[cat].length)];
+            let sales = (Math.floor(Math.random() * 50) + 5) * 50000;
+            
+            // Random date in 2023
+            let month = Math.floor(Math.random() * 12);
+            let day = Math.floor(Math.random() * 28) + 1;
+            let date = new Date(2023, month, day);
+            let dateStr = date.toLocaleDateString('id-ID');
+            let excelDate = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+
+            html += `<tr>
+                <td>TRX-${1000 + i}</td>
+                <td>${dateStr}</td>
+                <td>${reg}</td>
+                <td>${cat}</td>
+                <td>${prod}</td>
+                <td class="text-right">Rp ${sales.toLocaleString('id-ID')}</td>
+            </tr>`;
+
+            raw += `TRX-${1000 + i}\t${excelDate}\t${reg}\t${cat}\t${prod}\t${sales}\n`;
+        }
+
+        document.getElementById('pivotDataTable').innerHTML = html;
+
+        function copyPivotData() {
+            const el = document.createElement('textarea');
+            el.value = raw;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            const msg = document.getElementById('msg');
+            msg.classList.remove('hidden');
+            setTimeout(() => msg.classList.add('hidden'), 5000);
+        }
+    </script>
+</body>
+</html>

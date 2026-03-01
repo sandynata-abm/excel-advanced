@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 1: Advanced Logical & Text Functions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .excel-table th { background-color: #047857; color: white; padding: 12px; border: 1px solid #cbd5e1; text-align: left; font-size: 0.85rem; }
+        .excel-table td { border: 1px solid #cbd5e1; padding: 8px; font-family: 'Consolas', monospace; font-size: 0.8rem; vertical-align: middle; }
+        .excel-table tr:nth-child(even) { background-color: #f0fdf4; }
+        .step-card { border-left: 4px solid #047857; padding-left: 1rem; margin-bottom: 1.5rem; }
+        .challenge-box { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px dashed #047857; }
+        .formula-badge { background-color: #f8fafc; border-radius: 4px; padding: 2px 6px; font-weight: bold; font-family: monospace; color: #065f46; border: 1px solid #cbd5e1; }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8 font-sans">
+
+    <div class="max-w-6xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden">
+        <!-- Header -->
+        <div class="bg-[#047857] p-8 text-white">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold">Latihan Pertemuan 1: Data Mastery</h1>
+                    <p class="opacity-80 mt-2">Objektif: Manipulasi Teks & Logika Bisnis Progresif</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-white/20 px-4 py-2 rounded-full text-sm font-semibold">Durasi: 90 Menit</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alokasi Waktu Aktivitas -->
+        <div class="p-6 grid md:grid-cols-3 gap-4 border-b bg-gray-50">
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus A: Cleaning</p>
+                <p class="text-sm">20 Menit: Merapikan Nama & Alamat Supplier</p>
+            </div>
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus B: Extraction</p>
+                <p class="text-sm">30 Menit: Membedah Kode SKU Dinamis</p>
+            </div>
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus C: Logic</p>
+                <p class="text-sm">40 Menit: Skema Bonus Penjualan Berlapis</p>
+            </div>
+        </div>
+
+        <!-- Instruksi Kerja -->
+        <div class="p-8">
+            <h2 class="text-xl font-bold mb-6 text-gray-800 italic">"Anda adalah Data Analyst di PT. Maju Jaya. Anda menerima data kotor dari sistem lama yang harus segera dibersihkan untuk laporan Rapat Direksi."</h2>
+            
+            <div class="space-y-8">
+                <!-- Task A -->
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-emerald-800">Tugas 1: Pembersihan Database Supplier</h3>
+                    <p class="text-sm text-gray-600 mb-3">Gunakan kombinasi fungsi teks untuk memperbaiki kolom 'Nama Supplier' yang berantakan.</p>
+                    <div class="bg-gray-50 p-4 rounded text-xs font-mono border">
+                        Rumus: <span class="formula-badge">=PROPER(TRIM(sel))</span>
+                    </div>
+                </div>
+
+                <!-- Task B -->
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-emerald-800">Tugas 2: Ekstraksi Kode Produk (Dynamic Extraction)</h3>
+                    <p class="text-sm text-gray-600 mb-3">Pecah kolom 'Kode Gabungan' (Format: KODE-NEGARA) menjadi dua kolom terpisah.</p>
+                    <ul class="list-disc ml-5 text-xs text-gray-500 space-y-1">
+                        <li>Cari posisi tanda hubung (-) dengan <span class="formula-badge">FIND</span>.</li>
+                        <li>Ambil Kode Produk di kiri tanda hubung dengan <span class="formula-badge">LEFT</span>.</li>
+                        <li>Ambil Nama Negara di kanan tanda hubung dengan <span class="formula-badge">MID</span> atau <span class="formula-badge">RIGHT</span> & <span class="formula-badge">LEN</span>.</li>
+                    </ul>
+                </div>
+
+                <!-- Task C -->
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-emerald-800">Tugas 3: Perhitungan Bonus Progresif</h3>
+                    <p class="text-sm text-gray-600 mb-3">Gunakan <strong>Nested IF</strong> untuk menghitung bonus berdasarkan Total Penjualan:</p>
+                    <table class="w-full max-w-sm text-xs border mb-3">
+                        <tr class="bg-gray-100"><th>Penjualan</th><th>Bonus (%)</th></tr>
+                        <tr><td>> 200 Juta</td><td>15%</td></tr>
+                        <tr><td>101 - 200 Juta</td><td>10%</td></tr>
+                        <tr><td>50 - 100 Juta</td><td>5%</td></tr>
+                        <tr><td>< 50 Juta</td><td>0%</td></tr>
+                    </table>
+                </div>
+
+                <!-- Speed Challenge -->
+                <div class="challenge-box p-6 rounded-lg">
+                    <h3 class="font-bold text-lg text-emerald-900 flex items-center">
+                        <span class="mr-2">⚡</span> Productivity Challenge
+                    </h3>
+                    <p class="text-sm text-emerald-800 mt-2">
+                        Gunakan <strong>Fill Handle</strong> (klik dua kali pada pojok kanan bawah sel) untuk menerapkan rumus ke seluruh 100 baris data dalam sekejap. Atur format angka ke <span class="formula-badge">Currency (Rp)</span> agar profesional.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dataset Area -->
+        <div class="p-8 bg-gray-50 border-t">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-gray-700">Dataset Praktik Mandiri (100 Baris)</h3>
+                <button onclick="copyWorkshopData()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-lg transition flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                    Salin Dataset ke Excel
+                </button>
+            </div>
+            
+            <div class="h-80 overflow-y-auto border border-gray-300 rounded-lg bg-white">
+                <table class="w-full excel-table">
+                    <thead class="sticky top-0">
+                        <tr>
+                            <th>ID Transaksi</th><th>Nama Supplier (Dirty)</th><th>Kode Gabungan</th><th>Sales Amount</th><th>Bersih</th><th>Produk</th><th>Negara</th><th>Bonus (Rp)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTable">
+                        <!-- Data generated by JS -->
+                    </tbody>
+                </table>
+            </div>
+            <p id="msg" class="text-center mt-3 text-emerald-600 font-bold hidden text-sm">Dataset berhasil disalin! Silakan tempel di sel A1 sheet Excel Anda.</p>
+        </div>
+    </div>
+
+    <script>
+        const suppliers = ["   pt. GLOBAL teKNo  ", "CV maJU berSaMA   ", "  TOKO sUMBer rEjekI", "UD. jaya abadi  ", " pt indonusa jaya "];
+        const codes = ["LAP01-INDONESIA", "MOU22-MALAYSIA", "KEY99-SINGAPORE", "MON45-VIETNAM", "PRD88-THAILAND"];
+        let tableHtml = "";
+        let rawText = "ID Transaksi\tNama Supplier (Dirty)\tKode Gabungan\tSales Amount\tNama Bersih\tID Produk\tNegara\tBonus (Rp)\n";
+
+        for(let i=1; i<=100; i++) {
+            let id = "TRX-" + (1000 + i);
+            let dirtyName = suppliers[i % suppliers.length];
+            // Tambahkan variasi spasi acak
+            if (i % 3 === 0) dirtyName = "   " + dirtyName.trim() + "    ";
+            
+            let code = codes[i % codes.length];
+            let sales = (Math.floor(Math.random() * 250) + 10) * 1000000;
+            
+            tableHtml += `<tr>
+                <td>${id}</td>
+                <td class="bg-yellow-50">${dirtyName}</td>
+                <td class="bg-blue-50">${code}</td>
+                <td>${sales.toLocaleString()}</td>
+                <td class="text-gray-400 italic">...</td>
+                <td class="text-gray-400 italic">...</td>
+                <td class="text-gray-400 italic">...</td>
+                <td class="text-gray-400 italic">...</td>
+            </tr>`;
+            
+            rawText += `${id}\t${dirtyName}\t${code}\t${sales}\t\t\t\t\n`;
+        }
+        document.getElementById('dataTable').innerHTML = tableHtml;
+
+        function copyWorkshopData() {
+            const el = document.createElement('textarea');
+            el.value = rawText;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            const msg = document.getElementById('msg');
+            msg.classList.remove('hidden');
+            setTimeout(() => msg.classList.add('hidden'), 5000);
+        }
+    </script>
+</body>
+</html>

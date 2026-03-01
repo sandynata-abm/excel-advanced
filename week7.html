@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 7: Mid-Term Project - Integrated Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .excel-table th { background-color: #0f172a; color: white; padding: 10px; border: 1px solid #cbd5e1; text-align: left; font-size: 0.75rem; }
+        .excel-table td { border: 1px solid #cbd5e1; padding: 6px; font-family: 'Consolas', monospace; font-size: 0.7rem; vertical-align: middle; }
+        .excel-table tr:nth-child(even) { background-color: #f1f5f9; }
+        .milestone-card { border-top: 4px solid #3b82f6; transition: all 0.3s ease; }
+        .milestone-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .status-badge { font-size: 0.65rem; padding: 2px 8px; border-radius: 9999px; font-weight: bold; text-transform: uppercase; }
+        .badge-logic { background-color: #dcfce7; color: #166534; }
+        .badge-lookup { background-color: #dbeafe; color: #1e40af; }
+        .badge-etl { background-color: #fef3c7; color: #92400e; }
+    </style>
+</head>
+<body class="bg-slate-100 p-4 md:p-8 font-sans">
+
+    <div class="max-w-7xl mx-auto bg-white shadow-2xl rounded-2xl overflow-hidden">
+        <!-- Project Banner -->
+        <div class="bg-gradient-to-r from-[#0f172a] to-[#334155] p-10 text-white relative">
+            <div class="relative z-10">
+                <h1 class="text-4xl font-extrabold tracking-tight">Mid-Term Project: Retail Data Integration</h1>
+                <p class="text-lg opacity-90 mt-3 max-w-2xl">Uji Kompetensi Terintegrasi: Ubah data mentah yang berantakan menjadi Dashboard Keputusan Strategis dalam 90 Menit.</p>
+                <div class="mt-6 flex gap-4">
+                    <span class="bg-blue-500/30 border border-blue-400/50 px-4 py-1 rounded text-sm">Target: Professional Static Dashboard</span>
+                    <span class="bg-green-500/30 border border-green-400/50 px-4 py-1 rounded text-sm">Bobot: 30% Nilai Akhir</span>
+                </div>
+            </div>
+            <div class="absolute right-10 top-10 text-8xl opacity-10 font-bold italic select-none">MID-EXAM</div>
+        </div>
+
+        <!-- Dashboard Requirements / Milestones -->
+        <div class="p-8 grid md:grid-cols-4 gap-6 bg-slate-50 border-b">
+            <div class="bg-white p-5 rounded-xl milestone-card shadow-sm">
+                <span class="status-badge badge-etl mb-2 inline-block">Tahap 1</span>
+                <h3 class="font-bold text-slate-800">Data Prep (ETL)</h3>
+                <p class="text-xs text-gray-500 mt-2">Gunakan <b>Power Query</b> untuk gabungkan data 3 bulan & pecah <b>Kode_Produk</b>.</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl milestone-card shadow-sm" style="border-top-color: #8b5cf6;">
+                <span class="status-badge badge-lookup mb-2 inline-block">Tahap 2</span>
+                <h3 class="font-bold text-slate-800">Data Integration</h3>
+                <p class="text-xs text-gray-500 mt-2">Hubungkan <b>Master Harga</b> menggunakan <b>INDEX & MATCH</b> pada dataset transaksi.</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl milestone-card shadow-sm" style="border-top-color: #10b981;">
+                <span class="status-badge badge-logic mb-2 inline-block">Tahap 3</span>
+                <h3 class="font-bold text-slate-800">Business Logic</h3>
+                <p class="text-xs text-gray-500 mt-2">Hitung <b>Bonus Sales</b> (Nested IF) dan <b>Aging AR</b> (DATEDIF) umur piutang pelanggan.</p>
+            </div>
+            <div class="bg-white p-5 rounded-xl milestone-card shadow-sm" style="border-top-color: #f59e0b;">
+                <span class="status-badge mb-2 inline-block bg-orange-100 text-orange-700">Tahap 4</span>
+                <h3 class="font-bold text-slate-800">Final Reporting</h3>
+                <p class="text-xs text-gray-500 mt-2">Susun <b>PivotTable</b> interaktif dengan <b>Slicers</b> wilayah & kategori.</p>
+            </div>
+        </div>
+
+        <div class="p-8 grid lg:grid-cols-3 gap-8">
+            <!-- Instructions Panel -->
+            <div class="lg:col-span-1 space-y-6">
+                <section>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center mb-4">
+                        <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">1</span>
+                        Spesifikasi Teknis
+                    </h2>
+                    <div class="space-y-3">
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                            <p class="text-xs font-bold text-blue-800 uppercase mb-1">Pembersihan Data:</p>
+                            <p class="text-xs text-blue-700 italic leading-relaxed">Pecah kolom 'Kode_Unik' menjadi: ID_Produk, Kode_Cabang, dan Grade menggunakan delimiter atau fungsi MID/FIND.</p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
+                            <p class="text-xs font-bold text-purple-800 uppercase mb-1">Ketentuan Bonus:</p>
+                            <ul class="text-[0.7rem] text-purple-700 list-disc ml-4 space-y-1">
+                                <li>Omzet > 50jt: Bonus 5%</li>
+                                <li>Omzet 20jt-50jt: Bonus 2%</li>
+                                <li>Omzet < 20jt: 0%</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center mb-4">
+                        <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">2</span>
+                        Tabel Referensi (Master)
+                    </h2>
+                    <div class="overflow-hidden rounded-lg border border-slate-200 shadow-sm">
+                        <table class="w-full excel-table">
+                            <thead>
+                                <tr><th>ID_PRD</th><th>Produk</th><th>Harga</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>P01</td><td>Laptop Pro</td><td>15.000.000</td></tr>
+                                <tr><td>P02</td><td>Mouse Optic</td><td>250.000</td></tr>
+                                <tr><td>P03</td><td>Webcam 4K</td><td>1.200.000</td></tr>
+                                <tr><td>P04</td><td>Monitor 27"</td><td>3.500.000</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-[0.65rem] text-gray-400 mt-2 italic">*Berikan Nama Range (Defined Name) pada tabel ini untuk memudahkan INDEX/MATCH.</p>
+                </section>
+            </div>
+
+            <!-- Data Panel -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-slate-900">Dataset Transaksi Konsolidasi (Raw)</h2>
+                    <div class="flex gap-2">
+                        <button onclick="copyData('raw')" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded text-xs font-bold transition">Salin Data Transaksi</button>
+                        <button onclick="copyData('ar')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-xs font-bold transition">Salin Data Piutang</button>
+                    </div>
+                </div>
+
+                <div class="bg-white border rounded-xl overflow-hidden shadow-inner h-[500px] overflow-y-auto">
+                    <table class="w-full excel-table" id="projectTable">
+                        <thead class="sticky top-0 shadow-sm">
+                            <tr>
+                                <th>Kode_Unik</th><th>Nama_Karyawan</th><th>Tgl_Transaksi</th><th>Qty</th><th>Piutang_Terbayar</th><th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTableBody">
+                            <!-- JS Generated -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="copyNotice" class="hidden text-center text-green-600 font-bold text-sm animate-pulse">
+                    Dataset disalin! Silakan tempel di Excel (Cell A1).
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Footer -->
+        <div class="p-6 bg-slate-900 text-slate-400 text-center text-xs border-t border-slate-800">
+            &copy; 2024 Applied Business Excel - Evaluasi Tengah Semester. Semua rumus wajib menggunakan format Excel 2013/2016.
+        </div>
+    </div>
+
+    <script>
+        const names = ["Andi Saputra", "budi santoso", "Siti Aminah ", " dewi LESTARI", "Eko Prasetyo", "RINA asmara"];
+        const idPrd = ["P01", "P02", "P03", "P04"];
+        const branch = ["JKT", "SBY", "BDG", "MDN"];
+        const grade = ["A", "B", "C"];
+
+        let html = "";
+        let rawData = "Kode_Unik\tNama_Karyawan\tTgl_Transaksi\tQty\tPiutang_Terbayar\tStatus\n";
+        let arData = "Pelanggan\tTgl_Jatuh_Tempo\tSisa_Piutang\n";
+
+        for(let i=1; i<=30; i++) {
+            let n = names[Math.floor(Math.random() * names.length)];
+            let p = idPrd[Math.floor(Math.random() * idPrd.length)];
+            let b = branch[Math.floor(Math.random() * branch.length)];
+            let g = grade[Math.floor(Math.random() * grade.length)];
+            let qty = Math.floor(Math.random() * 20) + 1;
+            let paid = Math.random() > 0.3 ? "YES" : "NO";
+            
+            // Random date in Q1 2024
+            let month = Math.floor(Math.random() * 3); // 0-2
+            let day = Math.floor(Math.random() * 28) + 1;
+            let date = new Date(2024, month, day);
+            let dateStr = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+
+            let kodeUnik = `${p}-${b}-${g}`;
+            
+            html += `<tr>
+                <td>${kodeUnik}</td>
+                <td class="italic">${n}</td>
+                <td>${date.toLocaleDateString('id-ID')}</td>
+                <td>${qty}</td>
+                <td>${paid}</td>
+                <td><span class="text-gray-400">Pembersihan...</span></td>
+            </tr>`;
+
+            rawData += `${kodeUnik}\t${n}\t${dateStr}\t${qty}\t${paid}\t\n`;
+        }
+
+        document.getElementById('dataTableBody').innerHTML = html;
+
+        function copyData(type) {
+            const el = document.createElement('textarea');
+            if(type === 'raw') {
+                el.value = rawData;
+            } else {
+                el.value = "Pelanggan\tTgl_Jatuh_Tempo\tSisa_Piutang\nPT. Maju Jaya\t1/15/2024\t25000000\nCV. Abadi\t2/20/2024\t12500000\nUD. Berkah\t3/10/2024\t4500000\nPT. Sinar Dunia\t12/05/2023\t8900000";
+            }
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            
+            const notice = document.getElementById('copyNotice');
+            notice.classList.remove('hidden');
+            setTimeout(() => notice.classList.add('hidden'), 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 6: Intro to Power Query (ETL)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .excel-table th { background-color: #6d28d9; color: white; padding: 12px; border: 1px solid #cbd5e1; text-align: left; font-size: 0.85rem; }
+        .excel-table td { border: 1px solid #cbd5e1; padding: 8px; font-family: 'Consolas', monospace; font-size: 0.8rem; vertical-align: middle; }
+        .excel-table tr:nth-child(even) { background-color: #f5f3ff; }
+        .step-card { border-left: 4px solid #6d28d9; padding-left: 1rem; margin-bottom: 1.5rem; }
+        .pq-box { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border: 1px dashed #6d28d9; }
+        .step-badge { background-color: #ddd6fe; border-radius: 4px; padding: 2px 8px; font-weight: bold; font-family: sans-serif; color: #5b21b6; font-size: 0.75rem; border: 1px solid #c4b5fd; }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8 font-sans">
+
+    <div class="max-w-6xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden">
+        <!-- Header -->
+        <div class="bg-[#6d28d9] p-8 text-white">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold">Latihan Pertemuan 6: Power Query (ETL)</h1>
+                    <p class="opacity-80 mt-2">Objektif: Otomasi Pembersihan & Transformasi Data Massal</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-white/20 px-4 py-2 rounded-full text-sm font-semibold">Durasi: 90 Menit</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alokasi Waktu Aktivitas -->
+        <div class="p-6 grid md:grid-cols-4 gap-4 border-b bg-gray-50 text-center">
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus A</p>
+                <p class="text-xs">Merging Multi-Source Data</p>
+            </div>
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus B</p>
+                <p class="text-xs">Split & Replace Transformation</p>
+            </div>
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus C</p>
+                <p class="text-xs">Unpivoting (Wide to Tall)</p>
+            </div>
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus D</p>
+                <p class="text-xs">Automatic Date Formatting</p>
+            </div>
+        </div>
+
+        <!-- Instruksi Kerja -->
+        <div class="p-8">
+            <h2 class="text-xl font-bold mb-6 text-gray-800 italic">"Gudang data Anda berantakan. Anda memiliki laporan bulanan yang 'menyamping' dan kode produk yang menyatu. Gunakan Power Query untuk merapikannya tanpa copy-paste manual."</h2>
+            
+            <div class="space-y-6">
+                <!-- Task A & B -->
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-violet-900">Tugas 1: Pembersihan Kode & Lokasi</h3>
+                    <p class="text-sm text-gray-600 mb-3">Gunakan menu <span class="step-badge">Transform > Split Column</span> untuk memecah kolom 'Kode_Gabungan'.</p>
+                    <ul class="list-disc ml-5 text-sm text-gray-600 space-y-1">
+                        <li>Pecah berdasarkan delimiter tanda hubung (-).</li>
+                        <li>Gunakan <span class="step-badge">Replace Values</span> untuk mengubah nama cabang yang salah (misal: "JKT" menjadi "Jakarta").</li>
+                    </ul>
+                </div>
+
+                <!-- Task C -->
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-violet-900">Tugas 2: Unpivoting Data (Sangat Penting!)</h3>
+                    <p class="text-sm text-gray-600 mb-3">Laporan anggaran Anda berbentuk kolom (Jan, Feb, Mar). Ubah menjadi format database vertikal:</p>
+                    <ol class="list-decimal ml-5 text-sm text-gray-600 space-y-2">
+                        <li>Pilih kolom 'Jan', 'Feb', dan 'Mar'.</li>
+                        <li>Klik kanan > pilih <span class="step-badge">Unpivot Columns</span>.</li>
+                        <li>Ubah nama kolom 'Attribute' menjadi <strong>Bulan</strong> dan 'Value' menjadi <strong>Nilai_Anggaran</strong>.</li>
+                    </ol>
+                </div>
+
+                <!-- Applied Steps Concept -->
+                <div class="pq-box p-6 rounded-lg">
+                    <h3 class="font-bold text-lg text-violet-900 flex items-center">
+                        <span class="mr-2">⚙️</span> Power Query Magic: Applied Steps
+                    </h3>
+                    <p class="text-sm text-violet-800 mt-2 italic">
+                        "Perhatikan panel <strong>Applied Steps</strong> di sebelah kanan Power Query Editor. Setiap langkah yang Anda lakukan terekam di sana. Jika data sumber berubah, Anda cukup menekan tombol <strong>Refresh</strong> di Excel, dan semua langkah ini akan terulang otomatis."
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dataset Area -->
+        <div class="p-8 bg-gray-50 border-t">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                <div>
+                    <h3 class="font-bold text-gray-700">Dataset Berantakan (Raw Data)</h3>
+                    <p class="text-xs text-gray-500 italic">Dataset ini memiliki format 'Wide' (menyamping) yang harus di-Unpivot.</p>
+                </div>
+                <button onclick="copyPQData()" class="bg-violet-700 hover:bg-violet-800 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-lg transition flex items-center">
+                    Salin Dataset ETL
+                </button>
+            </div>
+            
+            <div class="overflow-x-auto border border-gray-300 rounded-lg bg-white">
+                <table class="w-full excel-table">
+                    <thead>
+                        <tr>
+                            <th>Kode_Gabungan</th><th>Jan (Anggaran)</th><th>Feb (Anggaran)</th><th>Mar (Anggaran)</th><th>Tgl_System</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pqDataTable">
+                        <!-- JS Generated -->
+                    </tbody>
+                </table>
+            </div>
+            <p id="msg" class="text-center mt-3 text-violet-700 font-bold hidden text-sm">Data ETL disalin! Di Excel, gunakan menu: Data > From Table/Range.</p>
+        </div>
+
+        <!-- Footer Info -->
+        <div class="p-4 bg-gray-100 text-center text-xs text-gray-500">
+            Kompatibilitas: Power Query tersedia di Excel 2016+ secara bawaan. Excel 2013 memerlukan instalasi Add-in tambahan.
+        </div>
+    </div>
+
+    <script>
+        const rawRows = [
+            { kode: "P01-JKT-LPT", jan: 1500, feb: 1600, mar: 1550, tgl: "2023.01.15" },
+            { kode: "P02-SBY-MOU", jan: 800, feb: 850, mar: 900, tgl: "15-02-2023" },
+            { kode: "P03-BDG-KBD", jan: 1200, feb: 1100, mar: 1300, tgl: "Mar/10/2023" },
+            { kode: "P01-JKT-LPT", jan: 1500, feb: 1500, mar: 1600, tgl: "2023/01/20" },
+            { kode: "P04-MKS-MON", jan: 3000, feb: 3100, mar: 3050, tgl: "25-01-2023" },
+            { kode: "P02-SBY-MOU", jan: 820, feb: 840, mar: 860, tgl: "2023-03-05" }
+        ];
+
+        let html = "";
+        let rawText = "Kode_Gabungan\tJan\tFeb\tMar\tTgl_System\n";
+
+        rawRows.forEach(row => {
+            html += `<tr>
+                <td>${row.kode}</td>
+                <td class="text-right">${row.jan}</td>
+                <td class="text-right">${row.feb}</td>
+                <td class="text-right">${row.mar}</td>
+                <td>${row.tgl}</td>
+            </tr>`;
+            rawText += `${row.kode}\t${row.jan}\t${row.feb}\t${row.mar}\t${row.tgl}\n`;
+        });
+
+        document.getElementById('pqDataTable').innerHTML = html;
+
+        function copyPQData() {
+            const el = document.createElement('textarea');
+            el.value = rawText;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            const msg = document.getElementById('msg');
+            msg.classList.remove('hidden');
+            setTimeout(() => msg.classList.add('hidden'), 5000);
+        }
+    </script>
+</body>
+</html>
