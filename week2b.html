@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 2: Retrieval Mastery - VLOOKUP & INDEX-MATCH</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .excel-table th { background-color: #1e40af; color: white; padding: 12px; border: 1px solid #cbd5e1; text-align: left; font-size: 0.85rem; }
+        .excel-table td { border: 1px solid #cbd5e1; padding: 8px; font-family: 'Consolas', monospace; font-size: 0.8rem; vertical-align: middle; }
+        .excel-table tr:nth-child(even) { background-color: #eff6ff; }
+        .step-card { border-left: 4px solid #1e40af; padding-left: 1rem; margin-bottom: 1.5rem; }
+        .challenge-box { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px dashed #1e40af; }
+        .formula-badge { background-color: #f8fafc; border-radius: 4px; padding: 2px 6px; font-weight: bold; font-family: monospace; color: #1e40af; border: 1px solid #cbd5e1; }
+        .tab-ref { background-color: #fff7ed; border: 1px solid #fdba74; }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8 font-sans">
+
+    <div class="max-w-6xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden">
+        <!-- Header -->
+        <div class="bg-[#1e40af] p-8 text-white">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold">Latihan Pertemuan 2: Retrieval Mastery</h1>
+                    <p class="opacity-80 mt-2">Objektif: Evaluasi Efisiensi VLOOKUP vs. INDEX & MATCH</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-white/20 px-4 py-2 rounded-full text-sm font-semibold">Durasi: 45-60 Menit</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alokasi Waktu -->
+        <div class="p-6 grid md:grid-cols-3 gap-4 border-b bg-gray-50">
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus A: VLOOKUP</p>
+                <p class="text-sm">Pencarian Standar (Kanan)</p>
+            </div>
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus B: INDEX-MATCH</p>
+                <p class="text-sm">Pencarian ke Arah Kiri</p>
+            </div>
+            <div class="p-3 bg-white rounded shadow-sm border border-gray-200">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus C: 2-Way Lookup</p>
+                <p class="text-sm">Baris & Kolom (Ukuran)</p>
+            </div>
+        </div>
+
+        <!-- Instruksi Kerja -->
+        <div class="p-8">
+            <h2 class="text-xl font-bold mb-6 text-gray-800 italic">"Gunakan Tabel Master untuk mengisi data yang kosong. Perhatikan posisi kolom ID Barang untuk menentukan rumus mana yang paling tepat."</h2>
+            
+            <div class="space-y-6">
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-blue-800">Tugas 1: Lokasi Gudang (VLOOKUP)</h3>
+                    <p class="text-sm text-gray-600 mb-2">Ambil kolom 'Lokasi'. Karena Lokasi berada di kanan ID Barang, gunakan VLOOKUP.</p>
+                </div>
+
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-blue-800">Tugas 2: Nama Supplier (INDEX-MATCH)</h3>
+                    <p class="text-sm text-gray-600 mb-2">Ambil kolom 'Supplier'. Karena Supplier berada di kiri ID Barang, VLOOKUP akan gagal. Gunakan INDEX & MATCH.</p>
+                </div>
+
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-blue-800">Tugas 3: Harga Satuan (2-Way INDEX-MATCH)</h3>
+                    <p class="text-sm text-gray-600 mb-2">Gunakan Tabel Harga. Cari berdasarkan ID Barang (Baris) dan Ukuran (Kolom).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Reference -->
+        <div class="p-8 bg-orange-50 border-t border-orange-200">
+            <h3 class="font-bold text-orange-800 mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.58 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.58 4 8 4s8-1.79 8-4M4 7c0-2.21 3.58-4 8-4s8 1.79 8 4m0 5c0 2.21-3.58 4-8 4s-8-1.79-8-4"></path></svg>
+                Tabel Referensi
+            </h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="overflow-x-auto rounded-lg border border-orange-300">
+                    <table class="w-full excel-table">
+                        <thead>
+                            <tr>
+                                <th class="tab-ref italic text-orange-900">Supplier (Left)</th>
+                                <th class="tab-ref font-bold">ID BARANG</th>
+                                <th class="tab-ref italic text-orange-900">Lokasi (Right)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="masterTable"></tbody>
+                    </table>
+                </div>
+                <div class="overflow-x-auto rounded-lg border border-orange-300">
+                    <table class="w-full excel-table">
+                        <thead>
+                            <tr>
+                                <th class="tab-ref">ID Barang</th>
+                                <th class="tab-ref">Small</th>
+                                <th class="tab-ref">Medium</th>
+                                <th class="tab-ref">Large</th>
+                            </tr>
+                        </thead>
+                        <tbody id="priceTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise Table -->
+        <div class="p-8 bg-gray-50 border-t">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-gray-700 underline uppercase tracking-wider">Lembar Kerja (25 Baris)</h3>
+                <button onclick="copyToExcel()" class="bg-green-700 hover:bg-green-800 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-lg transition flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    SALIN KE EXCEL
+                </button>
+            </div>
+            
+            <div class="border border-gray-300 rounded-lg bg-white overflow-hidden shadow-inner">
+                <table class="w-full excel-table">
+                    <thead>
+                        <tr>
+                            <th class="w-12 text-center bg-gray-200 text-gray-600">No</th>
+                            <th>ID Barang</th>
+                            <th>Ukuran</th>
+                            <th class="bg-yellow-50 text-yellow-800">Supplier</th>
+                            <th class="bg-yellow-50 text-yellow-800">Lokasi</th>
+                            <th class="bg-yellow-50 text-yellow-800">Harga</th>
+                        </tr>
+                    </thead>
+                    <tbody id="exerciseTable"></tbody>
+                </table>
+            </div>
+            <p id="msg" class="text-center mt-3 text-blue-600 font-bold hidden animate-pulse">✨ Data Berhasil Disalin! Silahkan Paste di Excel.</p>
+        </div>
+    </div>
+
+    <script>
+        const masterData = [
+            {id: "B-001", supplier: "Global Tech", loc: "A-12", pS: 50000, pM: 75000, pL: 100000},
+            {id: "B-002", supplier: "Indo Jaya", loc: "B-05", pS: 45000, pM: 65000, pL: 90000},
+            {id: "B-003", supplier: "Sinar Abadi", loc: "A-01", pS: 60000, pM: 85000, pL: 120000},
+            {id: "B-004", supplier: "Maju Bersama", loc: "C-10", pS: 55000, pM: 80000, pL: 110000},
+            {id: "B-005", supplier: "Sumber Rejeki", loc: "B-09", pS: 40000, pM: 60000, pL: 85000}
+        ];
+
+        const sizes = ["Small", "Medium", "Large"];
+        
+        // Render Tables
+        document.getElementById('masterTable').innerHTML = masterData.map(d => 
+            `<tr><td>${d.supplier}</td><td class="font-bold text-blue-700">${d.id}</td><td>${d.loc}</td></tr>`
+        ).join('');
+
+        document.getElementById('priceTable').innerHTML = masterData.map(d => 
+            `<tr><td>${d.id}</td><td>${d.pS}</td><td>${d.pM}</td><td>${d.pL}</td></tr>`
+        ).join('');
+
+        let exerciseHtml = "";
+        for(let i=0; i<25; i++) {
+            let item = masterData[i % masterData.length];
+            let size = sizes[i % sizes.length];
+            exerciseHtml += `<tr>
+                <td class="text-center text-gray-400 font-bold">${i+1}</td>
+                <td>${item.id}</td>
+                <td>${size}</td>
+                <td class="text-gray-300 italic">...</td>
+                <td class="text-gray-300 italic">...</td>
+                <td class="text-gray-300 italic">...</td>
+            </tr>`;
+        }
+        document.getElementById('exerciseTable').innerHTML = exerciseHtml;
+
+        function copyToExcel() {
+            let out = "TABEL MASTER\nSupplier\tID BARANG\tLokasi\n";
+            masterData.forEach(d => out += `${d.supplier}\t${d.id}\t${d.loc}\n`);
+            
+            out += "\nTABEL HARGA\nID Barang\tSmall\tMedium\tLarge\n";
+            masterData.forEach(d => out += `${d.id}\t${d.pS}\t${d.pM}\t${d.pL}\n`);
+            
+            out += "\nLEMBAR KERJA\nID Barang\tUkuran\tSupplier\tLokasi\tHarga\n";
+            for(let i=0; i<25; i++) {
+                let item = masterData[i % masterData.length];
+                let size = sizes[i % sizes.length];
+                out += `${item.id}\t${size}\t\t\t\n`;
+            }
+
+            const el = document.createElement('textarea');
+            el.value = out;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            
+            const msg = document.getElementById('msg');
+            msg.classList.remove('hidden');
+            setTimeout(() => msg.classList.add('hidden'), 3000);
+        }
+    </script>
+</body>
+</html>
