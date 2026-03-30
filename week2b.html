@@ -188,10 +188,8 @@
             el.select();
             document.execCommand('copy');
             document.body.removeChild(el);
-            
-            const msg = document.getElementById('msg');
-            msg.classList.remove('hidden');
-            setTimeout(() => msg.classList.add('hidden'), 3000);
+
+            alert('Data berhasil disalin! Silakan paste di Excel.');
         }
     </script>
 </body>

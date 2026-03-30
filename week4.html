@@ -165,9 +165,7 @@
             el.select();
             document.execCommand('copy');
             document.body.removeChild(el);
-            const msg = document.getElementById('msg');
-            msg.classList.remove('hidden');
-            setTimeout(() => msg.classList.add('hidden'), 5000);
+            alert('Data referensi berhasil disalin! Siapkan 3 Named Ranges di Excel.');
         }
     </script>
 </body>

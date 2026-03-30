@@ -188,9 +188,7 @@
             el.select();
             document.execCommand('copy');
             document.body.removeChild(el);
-            const msg = document.getElementById('msg');
-            msg.classList.remove('hidden');
-            setTimeout(() => msg.classList.add('hidden'), 5000);
+            alert('Berhasil disalin! Jangan lupa kunci sel ($) atau gunakan Named Range.');
         }
     </script>
 </body>

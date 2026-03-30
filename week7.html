@@ -147,6 +147,13 @@
         let rawData = "Kode_Unik\tNama_Karyawan\tTgl_Transaksi\tQty\tPiutang_Terbayar\tStatus\n";
         let arData = "Pelanggan\tTgl_Jatuh_Tempo\tSisa_Piutang\n";
 
+        function formatDateISO(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
         for(let i=1; i<=30; i++) {
             let n = names[Math.floor(Math.random() * names.length)];
             let p = idPrd[Math.floor(Math.random() * idPrd.length)];
@@ -159,14 +166,14 @@
             let month = Math.floor(Math.random() * 3); // 0-2
             let day = Math.floor(Math.random() * 28) + 1;
             let date = new Date(2024, month, day);
-            let dateStr = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+            let dateStr = formatDateISO(date);
 
             let kodeUnik = `${p}-${b}-${g}`;
             
             html += `<tr>
                 <td>${kodeUnik}</td>
                 <td class="italic">${n}</td>
-                <td>${date.toLocaleDateString('id-ID')}</td>
+                <td>${dateStr}</td>
                 <td>${qty}</td>
                 <td>${paid}</td>
                 <td><span class="text-gray-400">Pembersihan...</span></td>
@@ -182,16 +189,17 @@
             if(type === 'raw') {
                 el.value = rawData;
             } else {
-                el.value = "Pelanggan\tTgl_Jatuh_Tempo\tSisa_Piutang\nPT. Maju Jaya\t1/15/2024\t25000000\nCV. Abadi\t2/20/2024\t12500000\nUD. Berkah\t3/10/2024\t4500000\nPT. Sinar Dunia\t12/05/2023\t8900000";
+                el.value = "Pelanggan\tTgl_Jatuh_Tempo\tSisa_Piutang\nPT. Maju Jaya\t2024-01-15\t25000000\nCV. Abadi\t2024-02-20\t12500000\nUD. Berkah\t2024-03-10\t4500000\nPT. Sinar Dunia\t2023-12-05\t8900000";
             }
             document.body.appendChild(el);
             el.select();
             document.execCommand('copy');
             document.body.removeChild(el);
-            
-            const notice = document.getElementById('copyNotice');
-            notice.classList.remove('hidden');
-            setTimeout(() => notice.classList.add('hidden'), 3000);
+
+            const message = type === 'raw'
+                ? 'Dataset transaksi disalin! Silakan tempel di Excel (Cell A1).'
+                : 'Dataset piutang disalin! Silakan tempel di Excel (Cell A1).';
+            alert(message);
         }
     </script>
 </body>

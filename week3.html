@@ -173,9 +173,7 @@
             el.select();
             document.execCommand('copy');
             document.body.removeChild(el);
-            const msg = document.getElementById('msg');
-            msg.classList.remove('hidden');
-            setTimeout(() => msg.classList.add('hidden'), 5000);
+            alert('Dataset disalin! Format tanggal: YYYY-MM-DD (Excel akan membaca sebagai Date).');
         }
     </script>
 </body>

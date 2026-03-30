@@ -195,10 +195,8 @@
             el.select();
             document.execCommand('copy');
             document.body.removeChild(el);
-            
-            const msg = document.getElementById('msg');
-            msg.classList.remove('hidden');
-            setTimeout(() => msg.classList.add('hidden'), 5000);
+
+            alert('Data berhasil disalin! Silakan buka Excel dan tekan Paste (Ctrl+V) di sel A1.');
         }
     </script>
 </body>

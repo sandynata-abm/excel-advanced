@@ -154,6 +154,13 @@
         let html = "";
         let raw = "ID_Transaksi\tTanggal\tWilayah\tKategori\tProduk\tTotal_Penjualan\n";
 
+        function formatDateISO(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
         for(let i=1; i<=150; i++) {
             let reg = regions[Math.floor(Math.random() * regions.length)];
             let cat = categories[Math.floor(Math.random() * categories.length)];
@@ -164,8 +171,7 @@
             let month = Math.floor(Math.random() * 12);
             let day = Math.floor(Math.random() * 28) + 1;
             let date = new Date(2023, month, day);
-            let dateStr = date.toLocaleDateString('id-ID');
-            let excelDate = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+            let dateStr = formatDateISO(date);
 
             html += `<tr>
                 <td>TRX-${1000 + i}</td>
@@ -176,7 +182,7 @@
                 <td class="text-right">Rp ${sales.toLocaleString('id-ID')}</td>
             </tr>`;
 
-            raw += `TRX-${1000 + i}\t${excelDate}\t${reg}\t${cat}\t${prod}\t${sales}\n`;
+            raw += `TRX-${1000 + i}\t${dateStr}\t${reg}\t${cat}\t${prod}\t${sales}\n`;
         }
 
         document.getElementById('pivotDataTable').innerHTML = html;
@@ -188,9 +194,7 @@
             el.select();
             document.execCommand('copy');
             document.body.removeChild(el);
-            const msg = document.getElementById('msg');
-            msg.classList.remove('hidden');
-            setTimeout(() => msg.classList.add('hidden'), 5000);
+            alert('Dataset disalin! Tips: Setelah paste di Excel, gunakan Ctrl+T (Table) sebelum membuat PivotTable.');
         }
     </script>
 </body>

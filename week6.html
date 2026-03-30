@@ -123,11 +123,11 @@
 
     <script>
         const rawRows = [
-            { kode: "P01-JKT-LPT", jan: 1500, feb: 1600, mar: 1550, tgl: "2023.01.15" },
-            { kode: "P02-SBY-MOU", jan: 800, feb: 850, mar: 900, tgl: "15-02-2023" },
-            { kode: "P03-BDG-KBD", jan: 1200, feb: 1100, mar: 1300, tgl: "Mar/10/2023" },
-            { kode: "P01-JKT-LPT", jan: 1500, feb: 1500, mar: 1600, tgl: "2023/01/20" },
-            { kode: "P04-MKS-MON", jan: 3000, feb: 3100, mar: 3050, tgl: "25-01-2023" },
+            { kode: "P01-JKT-LPT", jan: 1500, feb: 1600, mar: 1550, tgl: "2023-01-15" },
+            { kode: "P02-SBY-MOU", jan: 800, feb: 850, mar: 900, tgl: "2023-02-15" },
+            { kode: "P03-BDG-KBD", jan: 1200, feb: 1100, mar: 1300, tgl: "2023-03-10" },
+            { kode: "P01-JKT-LPT", jan: 1500, feb: 1500, mar: 1600, tgl: "2023-01-20" },
+            { kode: "P04-MKS-MON", jan: 3000, feb: 3100, mar: 3050, tgl: "2023-01-25" },
             { kode: "P02-SBY-MOU", jan: 820, feb: 840, mar: 860, tgl: "2023-03-05" }
         ];
 
@@ -154,9 +154,7 @@
             el.select();
             document.execCommand('copy');
             document.body.removeChild(el);
-            const msg = document.getElementById('msg');
-            msg.classList.remove('hidden');
-            setTimeout(() => msg.classList.add('hidden'), 5000);
+            alert('Data ETL disalin! Di Excel, gunakan menu: Data > From Table/Range.');
         }
     </script>
 </body>
