@@ -157,15 +157,30 @@
     </div>
 
     <script>
-        function copyValidationData() {
-            const data = "DAFTAR KATEGORI\nElektronik\nFashion\nATK\n\nDETAIL PRODUK\nELEKTRONIK: Laptop, Mouse, Monitor\nFASHION: Kemeja, Celana, Sepatu\nATK: Kertas A4, Pulpen, Buku Nota";
-            const el = document.createElement('textarea');
-            el.value = data;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            alert('Data referensi berhasil disalin! Siapkan 3 Named Ranges di Excel.');
+        async function copyValidationData() {
+            const tsvData = [
+                ['DAFTAR KATEGORI','',  'ELEKTRONIK', '', 'FASHION', '', 'ATK'],
+                ['Elektronik', '', 'Laptop', '', 'Kemeja', '', 'Kertas A4'],
+                ['Fashion',  '', 'Mouse', '', 'Celana', '', 'Pulpen'],
+                ['ATK',  '', 'Monitor', '', 'Sepatu', '', 'Buku Nota']
+            ].map((row) => row.join('\t')).join('\n');
+
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(tsvData);
+                } else {
+                    const el = document.createElement('textarea');
+                    el.value = tsvData;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(el);
+                }
+
+                alert('Data list kategori berhasil disalin! Paste (Ctrl+V) di Excel.');
+            } catch (err) {
+                alert('Gagal menyalin data. Coba lagi atau gunakan browser yang mendukung Clipboard API.');
+            }
         }
     </script>
 </body>
