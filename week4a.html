@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering INDIRECT Function</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .excel-table th { background-color: #0369a1; color: white; padding: 12px; border: 1px solid #cbd5e1; text-align: left; font-size: 0.85rem; }
+        .excel-table td { border: 1px solid #cbd5e1; padding: 8px; font-family: 'Consolas', monospace; font-size: 0.8rem; vertical-align: middle; }
+        .excel-table tr:nth-child(even) { background-color: #f0f9ff; }
+        .step-card { border-left: 4px solid #0369a1; padding-left: 1rem; margin-bottom: 1.5rem; }
+        .challenge-box { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 1px dashed #0369a1; }
+        .formula-badge { background-color: #f8fafc; border-radius: 4px; padding: 2px 6px; font-weight: bold; font-family: monospace; color: #0369a1; border: 1px solid #cbd5e1; }
+        .drop-down-ui { position: relative; background-color: white; border: 1px solid #cbd5e1; padding: 4px 8px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .drop-down-ui::after { content: '▼'; font-size: 0.6rem; color: #64748b; }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8 font-sans">
+
+    <div class="max-w-6xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden">
+        <!-- Header -->
+        <div class="bg-[#0369a1] p-8 text-white">
+            <h1 class="text-3xl font-bold italic underline">Fungsi INDIRECT: The Magic of Text Reference</h1>
+            <p class="mt-2 opacity-90">Mengubah string teks menjadi alamat sel atau range yang valid secara programatik.</p>
+        </div>
+
+        <div class="p-8">
+            <!-- Konsep Utama -->
+            <div class="step-card shadow-sm">
+                <h2 class="text-xl font-bold text-sky-900 mb-3">Konsep Dasar</h2>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    Secara standar, jika Anda menulis <code class="formula-badge">="A1"</code>, Excel hanya menganggap itu teks biasa. 
+                    Namun, jika dibungkus <code class="formula-badge">=INDIRECT("A1")</code>, Excel akan pergi ke sel <strong>A1</strong> dan mengambil nilainya.
+                </p>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-white border rounded">
+                        <span class="text-xs font-bold text-gray-400 block mb-1">REFERENSI LANGSUNG</span>
+                        <code class="text-blue-600 font-bold">=A1</code>
+                    </div>
+                    <div class="p-4 bg-white border rounded">
+                        <span class="text-xs font-bold text-gray-400 block mb-1">REFERENSI INDIRECT</span>
+                        <code class="text-sky-600 font-bold">=INDIRECT("A" & 1)</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contoh Kasus 1 -->
+            <section class="mb-10">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <span class="bg-sky-100 text-sky-800 px-2 py-1 rounded">Kasus 1</span> 
+                    Dynamic Sheet Referencing
+                </h3>
+                <p class="text-sm text-gray-600 mb-4">
+                    Bayangkan Anda punya sheet bernama <strong>Januari</strong>, <strong>Februari</strong>, dan <strong>Maret</strong>. Anda ingin mengambil angka Total Penjualan di sel <strong>B10</strong> pada masing-masing sheet tanpa menulis rumus satu per satu.
+                </p>
+                
+                <table class="w-full excel-table mb-4">
+                    <thead>
+                        <tr>
+                            <th>Nama Sheet (Cell A1)</th>
+                            <th>Target Cell</th>
+                            <th>Rumus INDIRECT</th>
+                            <th>Hasil Logika</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Januari</td>
+                            <td>B10</td>
+                            <td><code class="formula-badge">=INDIRECT(A1 & "!B10")</code></td>
+                            <td>Mengambil data dari Sheet Januari cell B10</td>
+                        </tr>
+                        <tr>
+                            <td>Februari</td>
+                            <td>B10</td>
+                            <td><code class="formula-badge">=INDIRECT(A1 & "!B10")</code></td>
+                            <td>Mengambil data dari Sheet Februari cell B10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Contoh Kasus 2 -->
+            <section class="mb-10">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <span class="bg-sky-100 text-sky-800 px-2 py-1 rounded">Kasus 2</span> 
+                    Named Range Calculation
+                </h3>
+                <p class="text-sm text-gray-600 mb-4">
+                    Misalnya Anda memiliki 2 Named Range: <code class="formula-badge">Bonus_Staff</code> dan <code class="formula-badge">Bonus_Manager</code>.
+                </p>
+                <div class="bg-gray-800 text-green-400 p-5 rounded-lg font-mono text-xs mb-4 shadow-inner">
+                    <p>// Jika Cell E1 berisi teks: "Bonus_Staff"</p>
+                    <p>// Rumus di bawah ini akan menjumlahkan isi dari range tersebut:</p>
+                    <p class="text-yellow-300 text-sm mt-2">=SUM(INDIRECT(E1))</p>
+                </div>
+            </section>
+
+            <!-- Interactive Exercise Data -->
+            <div class="mt-12">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-gray-700 tracking-widest uppercase text-sm">Data Latihan (Copy ke Sel A1)</h3>
+                    <button onclick="copyExerciseData()" class="bg-sky-700 hover:bg-sky-800 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-lg transition flex items-center">
+                        SALIN DATA LATIHAN
+                    </button>
+                </div>
+                
+                <table class="w-full excel-table border-dashed">
+                    <thead>
+                        <tr>
+                            <th>Cell Ref (A)</th>
+                            <th>Value (B)</th>
+                            <th>Instruksi Rumus</th>
+                            <th>Tujuan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Target_Sel</td><td>C5</td><td>=INDIRECT(A2)</td><td>Mengambil isi dari C5</td>
+                        </tr>
+                        <tr><td>Sheet_Name</td><td>Laporan</td><td>=INDIRECT("'" & B3 & "'!A1")</td><td>Referansi sheet dinamis</td>
+                        </tr>
+                        <tr><td>Range_Nama</td><td>Data_Siswa</td><td>=ROWS(INDIRECT(B4))</td><td>Hitung jumlah baris di named range</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="copyFeedback" class="text-center text-sky-700 mt-4 font-bold text-sm hidden">Data tersalin! Tempel (Ctrl+V) di Excel Anda.</p>
+        </div>
+
+        <!-- Warning/Tips -->
+        <div class="bg-amber-50 p-6 border-t border-amber-200">
+            <h4 class="font-bold text-amber-800 mb-1 flex items-center gap-2">
+                ⚠️ Penting: Volatile Function
+            </h4>
+            <p class="text-xs text-amber-700 leading-relaxed">
+                Fungsi <code class="font-bold">INDIRECT</code> bersifat <strong>Volatile</strong>. Artinya, Excel akan menghitung ulang rumus ini setiap kali ada perubahan kecil di sel manapun dalam workbook Anda. Gunakan secukupnya pada file yang sangat besar untuk menjaga performa.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function copyExerciseData() {
+            const data = 
+`DATA LATIHAN INDIRECT
+Cell Ref\tValue\tInstruksi Rumus\tHasil Harapan
+Target_Sel\tC5\t=INDIRECT(A3)\t(Isi dari sel C5)
+Sheet_Name\tLaporan\t=INDIRECT("'"&B4&"'!A1")\t(Isi A1 di sheet Laporan)
+Range_Nama\tData_Sales\t=SUM(INDIRECT(B5))\t(Total dari Named Range)`;
+
+            const el = document.createElement('textarea');
+            el.value = data;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            
+            const feedback = document.getElementById('copyFeedback');
+            feedback.classList.remove('hidden');
+            setTimeout(() => feedback.classList.add('hidden'), 3000);
+        }
+    </script>
+</body>
+</html>
