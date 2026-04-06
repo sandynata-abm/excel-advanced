@@ -141,7 +141,55 @@
     </div>
 
     <script>
-        function copyExerciseData() {
+        function normalizeExcelCell(cell) {
+            const trimmed = cell.trim();
+            if (!trimmed) return cell;
+
+            if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+
+            const dmy = trimmed.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})$/);
+            if (dmy) {
+                const day = dmy[1].padStart(2, '0');
+                const month = dmy[2].padStart(2, '0');
+                const year = dmy[3].length === 2 ? `20${dmy[3]}` : dmy[3];
+                return `${year}-${month}-${day}`;
+            }
+
+            const numeric = trimmed.replace(/^rp\s*/i, '');
+            if (/^-?\d{1,3}([.,]\d{3})+$/.test(numeric)) {
+                return numeric.replace(/[.,]/g, '');
+            }
+
+            return cell;
+        }
+
+        function normalizeExcelText(text) {
+            return text
+                .split('\n')
+                .map((line) => line.split('\t').map(normalizeExcelCell).join('\t'))
+                .join('\n');
+        }
+
+        async function copyPlainTextForExcel(text) {
+            const normalized = normalizeExcelText(text);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                try {
+                    await navigator.clipboard.writeText(normalized);
+                    return;
+                } catch (err) {
+                    // Continue to fallback copy method.
+                }
+            }
+
+            const el = document.createElement('textarea');
+            el.value = normalized;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+        }
+
+        async function copyExerciseData() {
             const data = 
 `DATA LATIHAN INDIRECT
 Cell Ref\tValue\tInstruksi Rumus\tHasil Harapan
@@ -149,12 +197,7 @@ Target_Sel\tC5\t=INDIRECT(A3)\t(Isi dari sel C5)
 Sheet_Name\tLaporan\t=INDIRECT("'"&B4&"'!A1")\t(Isi A1 di sheet Laporan)
 Range_Nama\tData_Sales\t=SUM(INDIRECT(B5))\t(Total dari Named Range)`;
 
-            const el = document.createElement('textarea');
-            el.value = data;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
+            await copyPlainTextForExcel(data);
             
             const feedback = document.getElementById('copyFeedback');
             feedback.classList.remove('hidden');
