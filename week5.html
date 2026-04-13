@@ -65,7 +65,7 @@
                         <li>Buat <strong>PivotTable</strong> dari data transaksi, lalu taruh field <strong>Tanggal</strong> ke bagian <strong>Rows</strong>.</li>
                         <li>Taruh field <strong>Total Penjualan</strong> ke bagian <strong>Values</strong> agar muncul ringkasan angka per tanggal.</li>
                         <li>Klik salah satu nilai tanggal yang tampil di PivotTable. Pastikan yang diklik adalah tanggal di PivotTable, bukan tanggal di tabel sumber.</li>
-                        <li>Di <strong>Excel 2013/2016</strong>, klik kanan pada tanggal tersebut lalu pilih <strong>Group</strong>.</li>
+                        <li>Klik kanan pada tanggal tersebut lalu pilih <strong>Group</strong>.</li>
                         <li>Pada jendela <strong>Grouping</strong>, pilih <strong>Months</strong> dan <strong>Quarters</strong>. Jika perlu, biarkan <strong>Years</strong> tetap tercentang atau nonaktifkan sesuai kebutuhan tugas.</li>
                         <li>Klik <strong>OK</strong> untuk menampilkan ringkasan periodik berdasarkan bulan dan kuartal.</li>
                     </ol>
@@ -75,18 +75,29 @@
                 <!-- Task B -->
                 <div class="step-card">
                     <h3 class="font-bold text-lg text-slate-900 text-sm md:text-base">Tugas 2: Analisis Pertumbuhan (Comparison)</h3>
-                    <p class="text-sm text-gray-600 mb-3">Tampilkan tren naik/turun penjualan bulanan:</p>
-                    <ul class="list-disc ml-5 text-sm text-gray-600 space-y-1">
-                        <li>Klik kanan pada nilai di PivotTable > <span class="feature-badge">Show Values As</span></li>
-                        <li>Pilih <span class="feature-badge">% Difference From...</span></li>
-                        <li>Base Field: <strong>Tanggal</strong> | Base Item: <strong>(Previous)</strong></li>
-                    </ul>
+                    <ol class="list-decimal ml-5 text-sm text-gray-600 space-y-2">
+                        <li>Pastikan PivotTable untuk Tugas 1 sudah menampilkan data per <strong>bulan</strong>. Jika belum, selesaikan grouping tanggal terlebih dahulu.</li>
+                        <li>Klik salah satu angka di area <strong>Values</strong> pada PivotTable. Yang diklik harus sel angka, bukan label bulan atau kuartal.</li>
+                        <li>Klik kanan pada angka tersebut lalu pilih <strong>Show Values As</strong>.</li>
+                        <li>Pilih <strong>% Difference From...</strong> untuk menampilkan perubahan dibanding periode sebelumnya.</li>
+                        <li>Pada kotak dialog yang muncul, set <strong>Base Field</strong> ke <strong>Tanggal</strong> dan <strong>Base Item</strong> ke <strong>(Previous)</strong>.</li>
+                        <li>Klik <strong>OK</strong>. Hasilnya akan menampilkan persentase naik/turun penjualan dari bulan sebelumnya.</li>
+                    </ol>
+                    <p class="text-sm text-gray-600 mt-3">Jika <span class="feature-badge">Show Values As</span> tidak terlihat saat klik kanan, buka <span class="feature-badge">Value Field Settings</span> lalu cari tab atau bagian <span class="feature-badge">Show Values As</span>. Jika hasilnya tidak berubah, pastikan field nilai yang dipakai adalah <strong>Total Penjualan</strong>, bukan field lain.</p>
                 </div>
 
                 <!-- Task C -->
                 <div class="step-card">
                     <h3 class="font-bold text-lg text-slate-900 text-sm md:text-base">Tugas 3: Dashboard Interaktif (Slicers)</h3>
-                    <p class="text-sm text-gray-600 mb-3">Tambahkan elemen filter visual melalui menu <span class="feature-badge">PivotTable Analyze > Insert Slicer</span>. Pilih field <strong>Wilayah</strong> dan <strong>Kategori</strong>.</p>
+                    <ol class="list-decimal ml-5 text-sm text-gray-600 space-y-2">
+                        <li>Klik salah satu sel di <strong>PivotTable</strong> agar tab khusus PivotTable muncul di ribbon.</li>
+                        <li>Di <strong>Excel 2013/2016</strong>, buka tab <strong>PivotTable Tools</strong> lalu pilih <strong>Analyze</strong> (kadang tampil sebagai <strong>PivotTable Analyze</strong>).</li>
+                        <li>Klik <strong>Insert Slicer</strong>.</li>
+                        <li>Centang field <strong>Wilayah</strong> dan <strong>Kategori</strong>, lalu klik <strong>OK</strong>.</li>
+                        <li>Pindahkan slicer ke area yang mudah dilihat, lalu gunakan tombol pada slicer untuk menyaring data secara visual.</li>
+                        <li>Jika ingin mengembalikan tampilan semua data, klik ikon <strong>Clear Filter</strong> pada slicer.</li>
+                    </ol>
+                    <p class="text-sm text-gray-600 mt-3">Jika <span class="feature-badge">Insert Slicer</span> tidak terlihat, pastikan yang aktif adalah PivotTable, bukan sheet biasa. Pada Excel 2013/2016, menu ini baru muncul setelah Anda mengklik salah satu sel di PivotTable.</p>
                 </div>
 
                 <!-- Task D -->
