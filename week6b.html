@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 6B: Power Query untuk Studi Kasus Bisnis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .excel-table th { background-color: #7c3aed; color: white; padding: 12px; border: 1px solid #cbd5e1; text-align: left; font-size: 0.85rem; }
+        .excel-table td { border: 1px solid #cbd5e1; padding: 8px; font-family: 'Consolas', monospace; font-size: 0.8rem; vertical-align: middle; }
+        .excel-table tr:nth-child(even) { background-color: #faf5ff; }
+        .step-card { border-left: 4px solid #7c3aed; padding-left: 1rem; margin-bottom: 1.5rem; }
+        .pq-box { background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); border: 1px dashed #7c3aed; }
+        .step-badge { background-color: #ede9fe; border-radius: 4px; padding: 2px 8px; font-weight: bold; font-family: sans-serif; color: #6d28d9; font-size: 0.75rem; border: 1px solid #ddd6fe; }
+        .mini-card { background: linear-gradient(180deg, #ffffff 0%, #faf5ff 100%); border: 1px solid #e9d5ff; }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8 font-sans">
+
+    <div class="max-w-6xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden">
+        <div class="bg-[#7c3aed] p-8 text-white">
+            <div class="flex justify-between items-center gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold">Latihan Pertemuan 6B: Power Query untuk Bisnis</h1>
+                    <p class="opacity-80 mt-2">Objektif: Membersihkan, membentuk, mentransformasi, dan menggabungkan data penjualan</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-white/20 px-4 py-2 rounded-full text-sm font-semibold">Durasi: 90 Menit</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-6 grid md:grid-cols-4 gap-4 border-b bg-gray-50 text-center">
+            <div class="mini-card p-4 rounded shadow-sm">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus A</p>
+                <p class="text-xs mt-1">Data Cleansing</p>
+            </div>
+            <div class="mini-card p-4 rounded shadow-sm">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus B</p>
+                <p class="text-xs mt-1">Data Shaping</p>
+            </div>
+            <div class="mini-card p-4 rounded shadow-sm">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus C</p>
+                <p class="text-xs mt-1">Data Transforming</p>
+            </div>
+            <div class="mini-card p-4 rounded shadow-sm">
+                <p class="text-xs font-bold text-gray-500 uppercase">Kasus D</p>
+                <p class="text-xs mt-1">Data Combining</p>
+            </div>
+        </div>
+
+        <div class="p-8">
+            <h2 class="text-xl font-bold mb-6 text-gray-800 italic">"Anda bekerja sebagai analis data di sebuah perusahaan retail multi-cabang. Manajer operasional ingin laporan penjualan yang bersih dan siap dianalisis, tetapi data datang dari beberapa sumber yang formatnya tidak seragam."</h2>
+
+            <div class="space-y-6">
+                <div class="pq-box p-6 rounded-lg">
+                    <h3 class="font-bold text-lg text-violet-900 flex items-center">
+                        <span class="mr-2">🧭</span> Langkah Awal Sebelum Mulai
+                    </h3>
+                    <ol class="list-decimal ml-5 text-sm text-violet-900 mt-3 space-y-2">
+                        <li>Buka Excel, lalu paste data dari tombol <strong>Salin Dataset</strong> ke sheet baru untuk setiap tabel.</li>
+                        <li>Blok data, lalu tekan <strong>Ctrl + T</strong> agar setiap source berubah menjadi <strong>Table</strong>.</li>
+                        <li>Pastikan setiap tabel punya nama yang jelas, misalnya <strong>Transaksi_Retail</strong>, <strong>Target_Cabang</strong>, dan <strong>Master_Produk</strong>.</li>
+                        <li>Buka tab <strong>Data</strong>, lalu pilih <strong>From Table/Range</strong> untuk masuk ke Power Query Editor.</li>
+                        <li>Periksa panel <strong>Applied Steps</strong> agar siswa memahami bahwa setiap aksi akan tercatat otomatis.</li>
+                    </ol>
+                </div>
+
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-violet-900">Tugas 1: Data Cleansing</h3>
+                    <p class="text-sm text-gray-600 mb-3">Bersihkan data transaksi cabang agar siap diproses di Power Query Editor.</p>
+                    <ol class="list-decimal ml-5 text-sm text-gray-600 space-y-2">
+                        <li>Buka query <strong>Transaksi_Retail</strong> di Power Query Editor.</li>
+                        <li>Pilih kolom <strong>Nama_Pelanggan</strong> dan <strong>Cabang</strong>, lalu gunakan <span class="step-badge">Transform > Format > Trim</span> untuk menghapus spasi di depan dan belakang teks.</li>
+                        <li>Jika masih ada karakter tidak terlihat, lanjutkan dengan <span class="step-badge">Transform > Format > Clean</span> agar karakter non-printable ikut dibersihkan.</li>
+                        <li>Gunakan <span class="step-badge">Replace Values</span> pada kolom <strong>Cabang</strong> untuk mengganti data yang salah, misalnya <strong>Jakrta</strong> menjadi <strong>Jakarta</strong> dan <strong>JKT</strong> menjadi <strong>Jakarta</strong>.</li>
+                        <li>Periksa kolom <strong>Status_Pembayaran</strong>. Klik setiap nilai kosong lalu isi dengan <strong>Unknown</strong> menggunakan <span class="step-badge">Replace Values</span> atau <span class="step-badge">Fill</span> bila formatnya cocok.</li>
+                        <li>Urutkan data berdasarkan <strong>ID_Transaksi</strong> dan <strong>Tanggal</strong>, lalu pilih <span class="step-badge">Home > Remove Rows > Remove Duplicates</span> agar baris ganda terhapus.</li>
+                        <li>Klik ikon tipe data pada kolom <strong>Tanggal</strong> dan ubah menjadi <strong>Date</strong>.</li>
+                        <li>Ubah kolom <strong>Harga_Jual</strong> menjadi <strong>Decimal Number</strong> atau <strong>Whole Number</strong> sesuai kebutuhan pelaporan.</li>
+                        <li>Cek hasil akhir: pastikan nilai cabang sudah seragam, baris duplikat sudah hilang, dan tidak ada error tipe data.</li>
+                    </ol>
+                    <p class="text-sm text-gray-600 mt-3">Fokus tugas ini adalah memastikan data konsisten sebelum dianalisis. Urutan yang disarankan: <span class="step-badge">Trim/Clean</span> → <span class="step-badge">Replace Values</span> → <span class="step-badge">Remove Duplicates</span> → <span class="step-badge">Change Type</span>.</p>
+                </div>
+
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-violet-900">Tugas 2: Data Shaping</h3>
+                    <p class="text-sm text-gray-600 mb-3">Ubah bentuk data target penjualan bulanan dari format lebar menjadi format yang lebih mudah dibaca sistem laporan.</p>
+                    <ol class="list-decimal ml-5 text-sm text-gray-600 space-y-2">
+                        <li>Buka query <strong>Target_Cabang_Bulanan</strong> di Power Query Editor.</li>
+                        <li>Pastikan kolom <strong>Kode_Cabang</strong> tetap menjadi identifier utama dan tidak ikut dipilih saat proses transformasi.</li>
+                        <li>Pilih semua kolom bulan, yaitu <strong>Jan</strong> sampai <strong>Des</strong>.</li>
+                        <li>Klik kanan pada kolom yang dipilih, lalu pilih <span class="step-badge">Unpivot Columns</span> agar data berubah dari format lebar ke format panjang.</li>
+                        <li>Ganti nama kolom <strong>Attribute</strong> menjadi <strong>Bulan</strong> supaya hasilnya mudah dipahami saat dipakai di PivotTable atau laporan.</li>
+                        <li>Ganti nama kolom <strong>Value</strong> menjadi <strong>Target_Penjualan</strong> agar makna angkanya jelas.</li>
+                        <li>Periksa apakah hasil akhir sudah menjadi tiga kolom inti: <strong>Kode_Cabang</strong>, <strong>Bulan</strong>, dan <strong>Target_Penjualan</strong>.</li>
+                        <li>Jika ada format angka yang berubah menjadi teks, ubah kembali tipe datanya sebelum Load ke worksheet.</li>
+                    </ol>
+                    <p class="text-sm text-gray-600 mt-3">Tugas ini melatih kemampuan <strong>shaping</strong>, yaitu mengubah struktur data agar sesuai kebutuhan analisis dan dashboard.</p>
+                </div>
+
+                <div class="step-card">
+                    <h3 class="font-bold text-lg text-violet-900">Tugas 3: Data Transforming</h3>
+                    <p class="text-sm text-gray-600 mb-3">Transformasikan kolom mentah menjadi format bisnis yang lebih informatif.</p>
+                    <ol class="list-decimal ml-5 text-sm text-gray-600 space-y-2">
+                        <li>Buka query transaksi yang sudah dibersihkan pada tahap sebelumnya.</li>
+                        <li>Pilih kolom <strong>Kode_Produk</strong>, lalu gunakan <span class="step-badge">Split Column</span> berdasarkan delimiter tanda hubung agar terpisah menjadi bagian kode dan SKU.</li>
+                        <li>Buka kolom <strong>Tanggal</strong> lalu pastikan formatnya konsisten. Jika perlu, gunakan menu tipe data atau locale setting agar semua tanggal terbaca benar.</li>
+                        <li>Tambahkan kolom baru <strong>Jenis_Channel</strong> dari kolom <strong>Channel</strong> dengan logika sederhana: jika berisi <strong>Online</strong>, beri nilai <strong>E-Commerce</strong>; selain itu, beri nilai <strong>Offline</strong>.</li>
+                        <li>Untuk menghitung <strong>Margin</strong>, gabungkan dulu query transaksi dengan <strong>Master_Produk</strong> agar kolom <strong>Harga_Dasar</strong> ikut masuk ke tabel transaksi. Di Power Query, ini dilakukan dengan <span class="step-badge">Home > Merge Queries</span>, bukan dengan <strong>VLOOKUP</strong>.</li>
+                        <li>Setelah kolom <strong>Harga_Dasar</strong> muncul, klik <span class="step-badge">Add Column > Custom Column</span> dan buat rumus margin sederhana seperti <strong>[Harga_Jual] - [Harga_Dasar]</strong>.</li>
+                        <li>Jika kolom <strong>Qty</strong> tersedia, gunakan rumus yang lebih tepat, misalnya <strong>[Harga_Jual] - ([Harga_Dasar] * [Qty])</strong>. Pada latihan ini, kolom <strong>Qty</strong> sudah disediakan supaya siswa bisa menghitung margin dengan asumsi jumlah unit per transaksi.</li>
+                        <li>Lakukan pengecekan hasil transformasi: nama kolom baru sudah terbentuk, nilai kategori sudah sesuai, margin terhitung, dan tidak ada baris yang berubah menjadi error.</li>
+                    </ol>
+                    <p class="text-sm text-gray-600 mt-3">Transformasi berarti mengubah isi data menjadi bentuk baru yang lebih berguna untuk analisis bisnis. Untuk margin, alurnya adalah <span class="step-badge">Merge Queries</span> ke master produk, ambil <strong>Harga_Dasar</strong>, lalu hitung dengan <span class="step-badge">Custom Column</span>.</p>
+                </div>
+
+                <div class="pq-box p-6 rounded-lg">
+                    <h3 class="font-bold text-lg text-violet-900 flex items-center">
+                        <span class="mr-2">🔗</span> Tugas 4: Data Combining
+                    </h3>
+                    <p class="text-sm text-violet-800 mt-2 mb-3">
+                        Gabungkan beberapa sumber data agar manajemen bisa melihat laporan penjualan yang lengkap dalam satu tabel final.
+                    </p>
+                    <ol class="list-decimal ml-5 text-sm text-violet-900 space-y-2">
+                        <li>Buka query transaksi final yang sudah melalui cleansing dan transforming.</li>
+                        <li>Klik <span class="step-badge">Home > Merge Queries</span> untuk menggabungkan data transaksi dengan tabel <strong>Master_Produk</strong>.</li>
+                        <li>Pilih kolom <strong>Kode_Produk</strong> pada kedua tabel sebagai key penghubung, lalu pilih jenis join yang sesuai, biasanya <strong>Left Outer</strong>.</li>
+                        <li>Setelah merge selesai, klik ikon expand pada kolom hasil merge untuk menampilkan <strong>Nama_Produk</strong> dan <strong>Kategori</strong>.</li>
+                        <li>Lakukan merge kedua dengan tabel referensi cabang berdasarkan <strong>Kode_Cabang</strong> agar nama cabang atau wilayah ikut masuk ke tabel final.</li>
+                        <li>Jika ada data transaksi dari periode berbeda, gunakan <span class="step-badge">Append Queries</span> untuk menyatukan baris dari tabel Januari, Februari, dan bulan lainnya.</li>
+                        <li>Periksa kembali kolom hasil akhir supaya tidak ada kolom penting yang hilang setelah proses kombinasi.</li>
+                        <li>Pastikan struktur final siap dipakai untuk analisis, misalnya berisi <strong>ID_Transaksi</strong>, <strong>Tanggal</strong>, <strong>Cabang</strong>, <strong>Produk</strong>, <strong>Kategori</strong>, <strong>Harga_Jual</strong>, dan <strong>Target_Penjualan</strong>.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-8 bg-gray-50 border-t">
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <h3 class="font-bold text-gray-700">Dataset 1: Transaksi Penjualan Retail</h3>
+                    <p class="text-xs text-gray-500 italic">Raw data utama dengan masalah spasi, typo, duplikat, dan nilai kosong.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-700">Dataset 2: Target & Master Data</h3>
+                    <p class="text-xs text-gray-500 italic">Digunakan untuk shaping dan combining di Power Query.</p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-3 gap-2">
+                        <p class="text-sm font-semibold text-violet-800">Tabel A - Transaksi Penjualan</p>
+                        <button onclick="copyTransactions()" class="bg-violet-700 hover:bg-violet-800 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-lg transition">Salin Dataset Transaksi</button>
+                    </div>
+                    <div class="overflow-x-auto border border-gray-300 rounded-lg bg-white">
+                        <table class="w-full excel-table">
+                            <thead>
+                                <tr>
+                                    <th>ID_Transaksi</th><th>Tanggal</th><th>Kode_Cabang</th><th>Cabang</th><th>Kode_Produk</th><th>Channel</th><th>Qty</th><th>Nama_Pelanggan</th><th>Harga_Jual</th><th>Status_Pembayaran</th>
+                                </tr>
+                            </thead>
+                            <tbody id="txTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-3 gap-2">
+                            <p class="text-sm font-semibold text-violet-800">Tabel B - Target Cabang Bulanan</p>
+                            <button onclick="copyTargets()" class="bg-slate-800 hover:bg-slate-900 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-lg transition">Salin Dataset Target</button>
+                        </div>
+                        <div class="overflow-x-auto border border-gray-300 rounded-lg bg-white">
+                            <table class="w-full excel-table">
+                                <thead>
+                                    <tr>
+                                        <th>Kode_Cabang</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>Mei</th><th>Jun</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="targetTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-3 gap-2">
+                            <p class="text-sm font-semibold text-violet-800">Tabel C - Master Produk</p>
+                            <button onclick="copyProducts()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-lg transition">Salin Master Produk</button>
+                        </div>
+                        <div class="overflow-x-auto border border-gray-300 rounded-lg bg-white">
+                            <table class="w-full excel-table">
+                                <thead>
+                                    <tr>
+                                        <th>Kode_Produk</th><th>Nama_Produk</th><th>Kategori</th><th>Harga_Dasar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p id="msg" class="text-center mt-3 text-violet-700 font-bold hidden text-sm">Dataset disalin! Di Excel, gunakan Data > From Table/Range untuk mulai Power Query.</p>
+        </div>
+
+        <div class="p-4 bg-gray-100 text-center text-xs text-gray-500">
+            Kompatibilitas: Power Query tersedia di Excel 2016+ secara bawaan. Excel 2013 memerlukan Add-in terpisah.
+        </div>
+    </div>
+
+    <script>
+        const transactionRows = [
+            { id: "TRX-2001", tanggal: "2025-01-03", cabangKode: "CBG01", cabang: " Jakarta ", produk: "PRD-1001", channel: "Online", qty: 2, nama: "  Andi Pratama  ", total: "Rp 1.250.000", status: "Lunas" },
+            { id: "TRX-2002", tanggal: "2025-01-03", cabangKode: "CBG01", cabang: "Jakrta", produk: "PRD-1002", channel: "Offline", qty: 1, nama: "Siti Rahma", total: "Rp 850.000", status: "" },
+            { id: "TRX-2003", tanggal: "2025-01-05", cabangKode: "CBG02", cabang: "Bandung", produk: "PRD-1003", channel: "Online", qty: 3, nama: "Budi Santoso", total: "Rp 2.100.000", status: "Lunas" },
+            { id: "TRX-2004", tanggal: "2025-01-06", cabangKode: "CBG03", cabang: "Surabaya ", produk: "PRD-1004", channel: "Offline", qty: 1, nama: "Nina Putri", total: "Rp 1.450.000", status: "Pending" },
+            { id: "TRX-2005", tanggal: "2025-01-06", cabangKode: "CBG03", cabang: "Surabaya ", produk: "PRD-1004", channel: "Offline", qty: 1, nama: "Nina Putri", total: "Rp 1.450.000", status: "Pending" },
+            { id: "TRX-2006", tanggal: "05/01/2025", cabangKode: "CBG04", cabang: "JKT", produk: "PRD-1005", channel: "Online", qty: 2, nama: "  Rina  Wati", total: "Rp 975.000", status: "Lunas" },
+            { id: "TRX-2007", tanggal: "2025-01-08", cabangKode: "CBG02", cabang: "Bandung", produk: "PRD-1001", channel: "Offline", qty: 1, nama: "Dedi Kusuma", total: "Rp 1.600.000", status: "Lunas" },
+            { id: "TRX-2008", tanggal: "2025-01-09", cabangKode: "CBG05", cabang: "Medan", produk: "PRD-1002", channel: "Online", qty: 4, nama: "Maya Lestari", total: "Rp 1.050.000", status: "" }
+        ];
+
+        const targetRows = [
+            { cabang: "CBG01", jan: 12000000, feb: 12500000, mar: 12800000, apr: 13000000, mei: 13100000, jun: 13500000 },
+            { cabang: "CBG02", jan: 9800000, feb: 10000000, mar: 10300000, apr: 10600000, mei: 10800000, jun: 11000000 },
+            { cabang: "CBG03", jan: 11200000, feb: 11500000, mar: 11700000, apr: 11900000, mei: 12100000, jun: 12400000 },
+            { cabang: "CBG04", jan: 8700000, feb: 8900000, mar: 9100000, apr: 9400000, mei: 9600000, jun: 9800000 }
+        ];
+
+        const productRows = [
+            { kode: "PRD-1001", nama: "Mesin Kopi", kategori: "Elektronik", harga: 2250000 },
+            { kode: "PRD-1002", nama: "Blender", kategori: "Elektronik", harga: 1150000 },
+            { kode: "PRD-1003", nama: "Kursi Kantor", kategori: "Furnitur", harga: 2100000 },
+            { kode: "PRD-1004", nama: "Printer", kategori: "Elektronik", harga: 1850000 },
+            { kode: "PRD-1005", nama: "Rak Dokumen", kategori: "Furnitur", harga: 950000 }
+        ];
+
+        function toCurrency(value) {
+            return `Rp ${value.toLocaleString('id-ID')}`;
+        }
+
+        function buildTransactionHtml() {
+            let html = "";
+            let raw = "ID_Transaksi\tTanggal\tKode_Cabang\tCabang\tKode_Produk\tChannel\tQty\tNama_Pelanggan\tHarga_Jual\tStatus_Pembayaran\n";
+            transactionRows.forEach(row => {
+                html += `<tr>
+                    <td>${row.id}</td>
+                    <td>${row.tanggal}</td>
+                    <td>${row.cabangKode}</td>
+                    <td>${row.cabang}</td>
+                    <td>${row.produk}</td>
+                    <td>${row.channel}</td>
+                    <td class="text-right">${row.qty}</td>
+                    <td>${row.nama}</td>
+                    <td class="text-right">${row.total}</td>
+                    <td>${row.status}</td>
+                </tr>`;
+                raw += `${row.id}\t${row.tanggal}\t${row.cabangKode}\t${row.cabang}\t${row.produk}\t${row.channel}\t${row.qty}\t${row.nama}\t${row.total}\t${row.status}\n`;
+            });
+            document.getElementById('txTable').innerHTML = html;
+            return raw;
+        }
+
+        function buildTargetHtml() {
+            let html = "";
+            let raw = "Kode_Cabang\tJan\tFeb\tMar\tApr\tMei\tJun\n";
+            targetRows.forEach(row => {
+                html += `<tr>
+                    <td>${row.cabang}</td>
+                    <td class="text-right">${row.jan.toLocaleString('id-ID')}</td>
+                    <td class="text-right">${row.feb.toLocaleString('id-ID')}</td>
+                    <td class="text-right">${row.mar.toLocaleString('id-ID')}</td>
+                    <td class="text-right">${row.apr.toLocaleString('id-ID')}</td>
+                    <td class="text-right">${row.mei.toLocaleString('id-ID')}</td>
+                    <td class="text-right">${row.jun.toLocaleString('id-ID')}</td>
+                </tr>`;
+                raw += `${row.cabang}\t${row.jan}\t${row.feb}\t${row.mar}\t${row.apr}\t${row.mei}\t${row.jun}\n`;
+            });
+            document.getElementById('targetTable').innerHTML = html;
+            return raw;
+        }
+
+        function buildProductHtml() {
+            let html = "";
+            let raw = "Kode_Produk\tNama_Produk\tKategori\tHarga_Dasar\n";
+            productRows.forEach(row => {
+                html += `<tr>
+                    <td>${row.kode}</td>
+                    <td>${row.nama}</td>
+                    <td>${row.kategori}</td>
+                    <td class="text-right">${toCurrency(row.harga)}</td>
+                </tr>`;
+                raw += `${row.kode}\t${row.nama}\t${row.kategori}\t${row.harga}\n`;
+            });
+            document.getElementById('productTable').innerHTML = html;
+            return raw;
+        }
+
+        const transactionRaw = buildTransactionHtml();
+        const targetRaw = buildTargetHtml();
+        const productRaw = buildProductHtml();
+
+        function normalizeExcelCell(cell) {
+            const trimmed = cell.trim();
+            if (!trimmed) return cell;
+
+            if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+
+            const dmy = trimmed.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})$/);
+            if (dmy) {
+                const day = dmy[1].padStart(2, '0');
+                const month = dmy[2].padStart(2, '0');
+                const year = dmy[3].length === 2 ? `20${dmy[3]}` : dmy[3];
+                return `${year}-${month}-${day}`;
+            }
+
+            const numeric = trimmed.replace(/^rp\s*/i, '').replace(/[.,]/g, '');
+            if (/^-?\d+$/.test(numeric)) {
+                return numeric;
+            }
+
+            return cell;
+        }
+
+        function normalizeExcelText(text) {
+            return text
+                .split('\n')
+                .map((line) => line.split('\t').map(normalizeExcelCell).join('\t'))
+                .join('\n');
+        }
+
+        async function copyPlainTextForExcel(text) {
+            const normalized = normalizeExcelText(text);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                try {
+                    await navigator.clipboard.writeText(normalized);
+                    return;
+                } catch (err) {
+                    // Continue to fallback copy method.
+                }
+            }
+
+            const el = document.createElement('textarea');
+            el.value = normalized;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+        }
+
+        async function copyTransactions() {
+            await copyPlainTextForExcel(transactionRaw);
+            alert('Dataset transaksi disalin. Gunakan Data > From Table/Range untuk mulai Power Query.');
+        }
+
+        async function copyTargets() {
+            await copyPlainTextForExcel(targetRaw);
+            alert('Dataset target disalin. Gunakan Unpivot Columns pada Power Query.');
+        }
+
+        async function copyProducts() {
+            await copyPlainTextForExcel(productRaw);
+            alert('Master produk disalin. Gunakan Merge Queries untuk menggabungkan data.');
+        }
+    </script>
+</body>
+</html>
