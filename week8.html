@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 8: Financial Modeling Basics (Credit & Investment)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .excel-table th { background-color: #0f172a; color: white; padding: 10px; border: 1px solid #cbd5e1; text-align: left; font-size: 0.75rem; white-space: nowrap; }
+        .excel-table td { border: 1px solid #cbd5e1; padding: 7px; font-family: 'Consolas', monospace; font-size: 0.72rem; vertical-align: middle; }
+        .excel-table tr:nth-child(even) { background-color: #f8fafc; }
+        .section-card { border-top: 4px solid #0f172a; transition: all 0.25s ease; }
+        .section-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+        .feature-pill { border: 1px solid #cbd5e1; background: white; border-radius: 9999px; padding: 4px 10px; font-size: 0.68rem; font-weight: 700; color: #334155; display: inline-flex; align-items: center; gap: 6px; }
+        .formula-box { background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%); border: 1px dashed #2563eb; }
+        .finance-card { background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; }
+        .mini-stat { background: #0f172a; color: white; }
+        .shadow-finance { box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); }
+    </style>
+</head>
+<body class="bg-slate-100 p-4 md:p-8 font-sans">
+
+    <div class="max-w-7xl mx-auto bg-white shadow-finance rounded-2xl overflow-hidden">
+        <div class="bg-gradient-to-r from-[#0f172a] via-[#1e3a8a] to-[#0f766e] p-10 text-white relative overflow-hidden">
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+                <div class="max-w-3xl">
+                    <p class="text-xs uppercase tracking-[0.3em] text-sky-200/90 font-bold">Latihan Pertemuan 8</p>
+                    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mt-2">Financial Modeling Basics</h1>
+                    <p class="text-lg opacity-90 mt-4 max-w-2xl">Analisis kelayakan kredit dan perencanaan keuangan proyek melalui PMT, IPMT, PPMT, dan jadwal amortisasi hutang.</p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <span class="bg-white/15 border border-white/20 px-4 py-2 rounded-full text-sm font-semibold">Durasi: 90 Menit</span>
+                    <span class="bg-emerald-400/20 border border-emerald-300/30 px-4 py-2 rounded-full text-sm font-semibold">Fokus: Kredit & Investasi</span>
+                </div>
+            </div>
+            <div class="absolute right-6 top-6 text-[8rem] font-black italic opacity-10 select-none leading-none">W8</div>
+            <div class="absolute -right-16 -bottom-20 w-72 h-72 rounded-full bg-cyan-400/20 blur-3xl"></div>
+            <div class="absolute left-1/3 -top-20 w-72 h-72 rounded-full bg-blue-400/20 blur-3xl"></div>
+        </div>
+
+        <div class="p-6 md:p-8 border-b bg-slate-50 grid md:grid-cols-4 gap-4">
+            <div class="finance-card p-4 rounded-xl section-card">
+                <p class="text-[0.65rem] font-bold uppercase text-slate-400">Kasus A</p>
+                <p class="font-bold text-slate-800 mt-1">Simulasi KPR</p>
+                <p class="text-xs text-slate-500 mt-2">Hitung cicilan bulanan pinjaman rumah Rp500 juta dengan bunga 8% per tahun selama 15 tahun.</p>
+            </div>
+            <div class="finance-card p-4 rounded-xl section-card" style="border-top-color:#2563eb;">
+                <p class="text-[0.65rem] font-bold uppercase text-slate-400">Kasus B</p>
+                <p class="font-bold text-slate-800 mt-1">Komposisi Bunga & Pokok</p>
+                <p class="text-xs text-slate-500 mt-2">Bandingkan IPMT dan PPMT pada bulan ke-1 dan bulan ke-100 untuk melihat perubahan komponen cicilan.</p>
+            </div>
+            <div class="finance-card p-4 rounded-xl section-card" style="border-top-color:#0f766e;">
+                <p class="text-[0.65rem] font-bold uppercase text-slate-400">Kasus C</p>
+                <p class="font-bold text-slate-800 mt-1">Jadwal Amortisasi</p>
+                <p class="text-xs text-slate-500 mt-2">Susun tabel Bulan, Cicilan, Pokok, Bunga, dan Sisa Hutang sampai saldo akhir menjadi nol.</p>
+            </div>
+            <div class="finance-card p-4 rounded-xl section-card" style="border-top-color:#f59e0b;">
+                <p class="text-[0.65rem] font-bold uppercase text-slate-400">Kasus D</p>
+                <p class="font-bold text-slate-800 mt-1">Keputusan Bisnis</p>
+                <p class="text-xs text-slate-500 mt-2">Bandingkan dua opsi pinjaman modal usaha untuk menentukan total beban bunga paling rendah.</p>
+            </div>
+        </div>
+
+        <div class="p-6 md:p-8 grid lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1 space-y-6">
+                <section>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center mb-4">
+                        <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">1</span>
+                        Komponen Materi
+                    </h2>
+                    <div class="space-y-3 text-sm text-slate-600">
+                        <div class="formula-box p-4 rounded-xl">
+                            <p class="text-xs font-bold text-blue-800 uppercase mb-1">Time Value of Money</p>
+                            <p class="text-xs leading-relaxed text-blue-700">Memahami nilai waktu uang dalam pinjaman bank dan investasi, termasuk alasan bunga dihitung atas sisa pokok.</p>
+                        </div>
+                        <div class="formula-box p-4 rounded-xl">
+                            <p class="text-xs font-bold text-blue-800 uppercase mb-1">Loan Component Analysis</p>
+                            <p class="text-xs leading-relaxed text-blue-700">Membedakan bagian pokok dan bunga pada setiap periode agar arus kas perusahaan dapat dipetakan dengan akurat.</p>
+                        </div>
+                        <div class="formula-box p-4 rounded-xl">
+                            <p class="text-xs font-bold text-blue-800 uppercase mb-1">Amortization Schedule</p>
+                            <p class="text-xs leading-relaxed text-blue-700">Menyusun jadwal pembayaran hutang dari awal hingga lunas dengan saldo akhir yang mendekati nol karena pembulatan.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center mb-4">
+                        <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">2</span>
+                        Rumus & Fungsi
+                    </h2>
+                    <div class="space-y-3">
+                        <div class="p-4 rounded-xl border border-slate-200 bg-white">
+                            <p class="text-xs font-bold text-slate-800 mb-1">PMT(rate, nper, pv)</p>
+                            <p class="text-xs text-slate-600">Menghitung total cicilan tetap per periode, biasanya per bulan.</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 bg-white">
+                            <p class="text-xs font-bold text-slate-800 mb-1">IPMT(rate, per, nper, pv)</p>
+                            <p class="text-xs text-slate-600">Menghitung porsi bunga saja pada periode tertentu.</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 bg-white">
+                            <p class="text-xs font-bold text-slate-800 mb-1">PPMT(rate, per, nper, pv)</p>
+                            <p class="text-xs text-slate-600">Menghitung porsi pokok saja pada periode tertentu.</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                            <p class="text-xs font-bold text-slate-800 mb-1">Logika Absolut ($)</p>
+                            <p class="text-xs text-slate-600">Gunakan untuk mengunci sel bunga dan tenor saat rumus ditarik ke bawah pada amortisasi panjang.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center mb-4">
+                        <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">3</span>
+                        Optimasi Tampilan
+                    </h2>
+                    <div class="space-y-2 text-xs text-slate-600">
+                        <p class="feature-pill">Currency & Accounting Format</p>
+                        <p class="feature-pill">Data Table Sederhana</p>
+                        <p class="feature-pill">Absolute Reference dengan $</p>
+                        <p class="feature-pill">Perbandingan Tenor dan Total Bunga</p>
+                    </div>
+                    <div class="mt-4 p-4 rounded-xl bg-slate-900 text-slate-100">
+                        <p class="text-xs font-bold uppercase tracking-wide text-slate-300">Contoh Formula Excel</p>
+                        <p class="text-xs mt-2 font-mono leading-relaxed">=PMT($B$4/12,$B$5*12,$B$3)</p>
+                        <p class="text-xs mt-1 font-mono leading-relaxed">=IPMT($B$4/12,A2,$B$5*12,$B$3)</p>
+                        <p class="text-xs mt-1 font-mono leading-relaxed">=PPMT($B$4/12,A2,$B$5*12,$B$3)</p>
+                    </div>
+                </section>
+            </div>
+
+            <div class="lg:col-span-2 space-y-6">
+                <section class="section-card bg-white rounded-2xl p-6 border border-slate-200">
+                    <h2 class="text-xl font-bold text-slate-900 mb-4">Rincian Aktivitas (90 Menit)</h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-xl bg-blue-50 border border-blue-100">
+                            <p class="text-xs font-bold uppercase text-blue-800 mb-2">30 Menit - Teori & Demo</p>
+                            <ol class="list-decimal ml-4 text-xs text-blue-700 space-y-2 leading-relaxed">
+                                <li>Penjelasan variabel keuangan: rate, nper, dan pv.</li>
+                                <li>Demonstrasi mengapa bunga di awal pinjaman lebih besar daripada bunga di akhir pinjaman.</li>
+                                <li>Pembahasan konsep anuitas dan kaitannya dengan arus kas bulanan perusahaan.</li>
+                            </ol>
+                        </div>
+                        <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-100">
+                            <p class="text-xs font-bold uppercase text-emerald-800 mb-2">60 Menit - Praktik Mandiri</p>
+                            <ol class="list-decimal ml-4 text-xs text-emerald-700 space-y-2 leading-relaxed">
+                                <li>Kasus A: hitung cicilan bulanan pinjaman rumah dengan PMT.</li>
+                                <li>Kasus B: bandingkan IPMT dan PPMT pada bulan ke-1 dan ke-100.</li>
+                                <li>Kasus C: susun jadwal amortisasi utuh sampai saldo akhir nol.</li>
+                                <li>Kasus D: bandingkan dua opsi pinjaman untuk memilih beban bunga terendah.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-card bg-white rounded-2xl p-6 border border-slate-200">
+                    <div class="flex flex-col md:flex-row justify-between md:items-center gap-3 mb-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900">Dataset Latihan Finansial</h2>
+                            <p class="text-xs text-slate-500 italic">Salin data ke Excel mulai dari sel A1 untuk menghitung PMT, IPMT, dan PPMT. Tabel amortisasi di bawah digunakan sebagai pembanding koreksi.</p>
+                        </div>
+                        <!-- <div class="flex flex-wrap gap-2">
+                            <button onclick="copyData('loan')" class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold transition">Salin Kasus A</button>
+                            <button onclick="copyData('bank')" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-xs font-bold transition">Salin Perbandingan Bank</button>
+                            <button onclick="copyData('sensitivity')" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-lg text-xs font-bold transition">Salin Data Tenor</button>
+                        </div> -->
+                    </div>
+
+                    <div class="space-y-6 mb-6">
+                        <div>
+                            <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                                <table class="w-full excel-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Kasus</th><th>Pokok</th><th>Bunga Tahunan</th><th>Tenor (Tahun)</th><th>Rate/Bulan</th><th>Nper (Bulan)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="loanInputTable"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="mini-stat rounded-xl p-4">
+                            <p class="text-xs uppercase tracking-wide text-slate-300 font-bold">Cicilan Bulanan KPR</p>
+                            <p id="monthlyPaymentStat" class="text-2xl font-black mt-2">-</p>
+                            <p class="text-xs text-slate-300 mt-1">Kasus A menggunakan PMT dengan rate bulanan dan tenor 180 bulan.</p>
+                        </div>
+
+                        <div class="finance-card rounded-xl p-4 border border-slate-200">
+                            <p class="text-xs uppercase tracking-wide text-slate-500 font-bold">Referensi Komposisi Cicilan</p>
+                            <div class="mt-3 grid grid-cols-2 gap-3 text-xs">
+                                <div class="p-3 rounded-lg bg-slate-50 border border-slate-200">
+                                    <p class="text-slate-500">Bunga Bulan 1</p>
+                                    <p id="interestM1" class="font-bold text-slate-900 mt-1">-</p>
+                                </div>
+                                <div class="p-3 rounded-lg bg-slate-50 border border-slate-200">
+                                    <p class="text-slate-500">Pokok Bulan 1</p>
+                                    <p id="principalM1" class="font-bold text-slate-900 mt-1">-</p>
+                                </div>
+                                <div class="p-3 rounded-lg bg-slate-50 border border-slate-200">
+                                    <p class="text-slate-500">Bunga Bulan 100</p>
+                                    <p id="interestM100" class="font-bold text-slate-900 mt-1">-</p>
+                                </div>
+                                <div class="p-3 rounded-lg bg-slate-50 border border-slate-200">
+                                    <p class="text-slate-500">Pokok Bulan 100</p>
+                                    <p id="principalM100" class="font-bold text-slate-900 mt-1">-</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="mb-3">
+                                <div>
+                                    <p class="text-sm font-bold text-slate-800">Kasus C: Jadwal Amortisasi (Preview)</p>
+                                    <p class="text-xs text-slate-500">Susun jadwal amortisasi menjadi seperti yang ditampilkandari data yang ada sebelumnya.</p>
+                                </div>
+                            </div>
+                            <div class="h-[520px] overflow-y-auto border border-slate-200 rounded-xl bg-white">
+                                <table class="w-full excel-table">
+                                    <thead class="sticky top-0 shadow-sm">
+                                        <tr>
+                                            <th>Bulan</th><th>Saldo Awal</th><th>Cicilan</th><th>Pokok</th><th>Bunga</th><th>Sisa Hutang</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="amortizationBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div>
+                                    <p class="text-sm font-bold text-slate-800">Kasus D: Perbandingan Bank</p>
+                                    <p class="text-xs text-slate-500">Hitung Cicilan/Bulan dan Total Bunga. Bandingkan total bunga untuk memutuskan opsi pinjaman terbaik.</p>
+                                </div>
+                                <!-- <div class="flex flex-wrap gap-2">
+                                    <button onclick="copyData('bank')" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-xs font-bold transition">Salin Perbandingan Bank</button>
+                                    <button onclick="copyData('sensitivity')" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-lg text-xs font-bold transition">Salin Data Tenor</button>
+                                </div> -->
+                            </div>
+                            <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white">
+                                <table class="w-full excel-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Bank</th><th>Pokok</th><th>Bunga Tahunan</th><th>Tenor</th><th>Cicilan/Bulan</th><th>Total Bunga</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bankTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div>
+                                    <p class="text-sm font-bold text-slate-800">Data Table Sederhana: Sensitivitas Tenor</p>
+                                    <p class="text-xs text-slate-500">Dari data Kasus A, bandingkan total bunga jika tenor berubah sementara bunga tetap 8% per tahun.</p>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white">
+                                <table class="w-full excel-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tenor (Tahun)</th><th>Nper</th><th>Cicilan/Bulan</th><th>Total Bunga</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="sensitivityTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-amber-50 border border-amber-200">
+                            <p class="text-xs font-bold text-amber-800 uppercase mb-1">Target Akhir</p>
+                            <p class="text-xs text-amber-700 leading-relaxed">Mahasiswa dinyatakan berhasil jika dapat menghitung PMT, mengisi IPMT/PPMT per bulan, menyusun jadwal amortisasi, dan memilih bank dengan total beban bunga paling rendah.</p>
+                        </div>
+                    </div>
+
+                    <p id="copyNotice" class="hidden text-center text-emerald-700 font-bold text-sm animate-pulse">Dataset disalin! Tempel di Excel mulai dari sel A1.</p>
+                </section>
+            </div>
+        </div>
+
+        <div class="p-4 bg-slate-900 text-slate-400 text-center text-xs border-t border-slate-800">
+            Excel Advanced - Pertemuan 8 Financial Modeling Basics (Credit & Investment).
+        </div>
+    </div>
+
+    <script>
+        const loanScenario = {
+            label: "Kasus A - Simulasi KPR",
+            principal: 500000000,
+            annualRate: 0.08,
+            years: 15
+        };
+
+        const bankComparison = [
+            { bank: "Bank Alpha", principal: 300000000, annualRate: 0.079, years: 10 },
+            { bank: "Bank Beta", principal: 300000000, annualRate: 0.084, years: 10 }
+        ];
+
+        const tenorSensitivityYears = [10, 15, 20];
+
+        function formatCurrency(value) {
+            return `Rp ${Math.round(value).toLocaleString('id-ID')}`;
+        }
+
+        function formatNumber(value) {
+            return Math.round(value).toLocaleString('id-ID');
+        }
+
+        function computePmt(rate, nper, pv) {
+            if (rate === 0) {
+                return pv / nper;
+            }
+            return (rate * pv) / (1 - Math.pow(1 + rate, -nper));
+        }
+
+        function buildAmortizationSchedule(principal, annualRate, years) {
+            const monthlyRate = annualRate / 12;
+            const totalMonths = years * 12;
+            const payment = computePmt(monthlyRate, totalMonths, principal);
+            let balance = principal;
+            const schedule = [];
+
+            for (let month = 1; month <= totalMonths; month++) {
+                const openingBalance = balance;
+                const interest = openingBalance * monthlyRate;
+                let principalPortion = payment - interest;
+                let endingBalance = openingBalance - principalPortion;
+
+                if (month === totalMonths) {
+                    principalPortion = openingBalance;
+                    endingBalance = 0;
+                }
+
+                schedule.push({
+                    month,
+                    openingBalance,
+                    payment,
+                    principalPortion,
+                    interest,
+                    endingBalance
+                });
+
+                balance = endingBalance;
+            }
+
+            return { payment, schedule };
+        }
+
+        function buildLoanInputsTable() {
+            const monthlyRate = loanScenario.annualRate / 12;
+            const nper = loanScenario.years * 12;
+            const html = `
+                <tr>
+                    <td>${loanScenario.label}</td>
+                    <td class="text-right">${formatCurrency(loanScenario.principal)}</td>
+                    <td class="text-right">${(loanScenario.annualRate * 100).toFixed(2)}%</td>
+                    <td class="text-right">${loanScenario.years}</td>
+                    <td class="text-right">${(monthlyRate * 100).toFixed(4)}%</td>
+                    <td class="text-right">${formatNumber(nper)}</td>
+                </tr>`;
+            document.getElementById('loanInputTable').innerHTML = html;
+
+            const { payment, schedule } = buildAmortizationSchedule(loanScenario.principal, loanScenario.annualRate, loanScenario.years);
+            const month1 = schedule[0];
+            const month100 = schedule[99];
+
+            document.getElementById('monthlyPaymentStat').textContent = formatCurrency(payment);
+            document.getElementById('interestM1').textContent = formatCurrency(month1.interest);
+            document.getElementById('principalM1').textContent = formatCurrency(month1.principalPortion);
+            document.getElementById('interestM100').textContent = formatCurrency(month100.interest);
+            document.getElementById('principalM100').textContent = formatCurrency(month100.principalPortion);
+        }
+
+        function buildAmortizationTable() {
+            const { schedule } = buildAmortizationSchedule(loanScenario.principal, loanScenario.annualRate, loanScenario.years);
+            let html = '';
+
+            schedule.forEach((row) => {
+                html += `<tr>
+                    <td class="text-right">${row.month}</td>
+                    <td class="text-right text-slate-500">${formatCurrency(row.openingBalance)}</td>
+                    <td class="text-right">${formatCurrency(row.payment)}</td>
+                    <td class="text-right">${formatCurrency(row.principalPortion)}</td>
+                    <td class="text-right">${formatCurrency(row.interest)}</td>
+                    <td class="text-right text-slate-500">${formatCurrency(row.endingBalance)}</td>
+                </tr>`;
+            });
+
+            document.getElementById('amortizationBody').innerHTML = html;
+        }
+
+        function buildBankComparisonTable() {
+            let html = '';
+            bankComparisonRaw = 'Bank\tPokok\tBunga_Tahunan\tTenor_Tahun\tCicilan_Bulanan\tTotal_Bunga\n';
+
+            bankComparison.forEach((bank) => {
+                const result = buildAmortizationSchedule(bank.principal, bank.annualRate, bank.years);
+                const totalInterest = result.schedule.reduce((sum, row) => sum + row.interest, 0);
+                html += `<tr>
+                    <td>${bank.bank}</td>
+                    <td class="text-right">${formatCurrency(bank.principal)}</td>
+                    <td class="text-right">${(bank.annualRate * 100).toFixed(2)}%</td>
+                    <td class="text-right">${bank.years}</td>
+                    <td class="text-right text-slate-500">${formatCurrency(result.payment)}</td>
+                    <td class="text-right text-slate-500">${formatCurrency(totalInterest)}</td>
+                </tr>`;
+                bankComparisonRaw += `${bank.bank}\t${bank.principal}\t${bank.annualRate}\t${bank.years}\t${Math.round(result.payment)}\t${Math.round(totalInterest)}\n`;
+            });
+
+            document.getElementById('bankTableBody').innerHTML = html;
+        }
+
+        function buildSensitivityTable() {
+            let html = '';
+            sensitivityRaw = 'Tenor_Tahun\tNper\tCicilan_Bulanan\tTotal_Bunga\n';
+
+            tenorSensitivityYears.forEach((years) => {
+                const result = buildAmortizationSchedule(loanScenario.principal, loanScenario.annualRate, years);
+                const totalInterest = result.schedule.reduce((sum, row) => sum + row.interest, 0);
+                html += `<tr>
+                    <td class="text-right">${years}</td>
+                    <td class="text-right">${years * 12}</td>
+                    <td class="text-right text-slate-500">${formatCurrency(result.payment)}</td>
+                    <td class="text-right text-slate-500">${formatCurrency(totalInterest)}</td>
+                </tr>`;
+                sensitivityRaw += `${years}\t${years * 12}\t${Math.round(result.payment)}\t${Math.round(totalInterest)}\n`;
+            });
+
+            document.getElementById('sensitivityTableBody').innerHTML = html;
+        }
+
+        function normalizeExcelCell(cell) {
+            const trimmed = cell.trim();
+            if (!trimmed) return cell;
+
+            if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+
+            const dmy = trimmed.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})$/);
+            if (dmy) {
+                const day = dmy[1].padStart(2, '0');
+                const month = dmy[2].padStart(2, '0');
+                const year = dmy[3].length === 2 ? `20${dmy[3]}` : dmy[3];
+                return `${year}-${month}-${day}`;
+            }
+
+            const numeric = trimmed.replace(/^rp\s*/i, '');
+            if (/^-?\d{1,3}([.,]\d{3})+$/.test(numeric)) {
+                return numeric.replace(/[.,]/g, '');
+            }
+
+            return cell;
+        }
+
+        function normalizeExcelText(text) {
+            return text
+                .split('\n')
+                .map((line) => line.split('\t').map(normalizeExcelCell).join('\t'))
+                .join('\n');
+        }
+
+        async function copyPlainTextForExcel(text) {
+            const normalized = normalizeExcelText(text);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                try {
+                    await navigator.clipboard.writeText(normalized);
+                    return;
+                } catch (err) {
+                    // Continue to fallback copy method.
+                }
+            }
+
+            const el = document.createElement('textarea');
+            el.value = normalized;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+        }
+
+        async function copyData(type) {
+            let out = '';
+            if (type === 'loan') {
+                // out = 'Kasus\tPokok\tBunga_Tahunan\tTenor_Tahun\tRate_Bulanan\tNper\n' +
+                    // `${loanScenario.label}\t${loanScenario.principal}\t${loanScenario.annualRate}\t${loanScenario.years}\t${loanScenario.annualRate / 12}\t${loanScenario.years * 12}`;
+            } else if (type === 'bank') {
+                out = bankComparisonRaw;
+            } else if (type === 'sensitivity') {
+                out = sensitivityRaw;
+            }
+
+            await copyPlainTextForExcel(out);
+
+            document.getElementById('copyNotice').classList.remove('hidden');
+            window.clearTimeout(window.copyNoticeTimer);
+            window.copyNoticeTimer = window.setTimeout(() => {
+                document.getElementById('copyNotice').classList.add('hidden');
+            }, 2500);
+
+            alert('Dataset disalin! Silakan tempel di Excel mulai dari sel A1.');
+        }
+
+        let bankComparisonRaw = '';
+        let sensitivityRaw = '';
+
+        buildLoanInputsTable();
+        buildAmortizationTable();
+        buildBankComparisonTable();
+        buildSensitivityTable();
+    </script>
+</body>
+</html>
