@@ -287,7 +287,7 @@
 
     <script>
         const loanScenario = {
-            label: "Kasus A - Simulasi KPR",
+            label: "Simulasi KPR",
             principal: 500000000,
             annualRate: 0.08,
             years: 15
@@ -295,7 +295,7 @@
 
         const bankComparison = [
             { bank: "Bank Alpha", principal: 300000000, annualRate: 0.079, years: 10 },
-            { bank: "Bank Beta", principal: 300000000, annualRate: 0.084, years: 10 }
+            { bank: "Bank Beta", principal: 300000000, annualRate: 0.084, years: 7 }
         ];
 
         const tenorSensitivityYears = [10, 15, 20];
@@ -357,8 +357,8 @@
                     <td class="text-right">${formatCurrency(loanScenario.principal)}</td>
                     <td class="text-right">${(loanScenario.annualRate * 100).toFixed(2)}%</td>
                     <td class="text-right">${loanScenario.years}</td>
-                    <td class="text-right">${(monthlyRate * 100).toFixed(4)}%</td>
-                    <td class="text-right">${formatNumber(nper)}</td>
+                    <td class="text-right text-slate-100">${(monthlyRate * 100).toFixed(4)}%</td>
+                    <td class="text-right text-slate-100">${formatNumber(nper)}</td>
                 </tr>`;
             document.getElementById('loanInputTable').innerHTML = html;
 
@@ -380,11 +380,11 @@
             schedule.forEach((row) => {
                 html += `<tr>
                     <td class="text-right">${row.month}</td>
-                    <td class="text-right text-slate-500">${formatCurrency(row.openingBalance)}</td>
+                    <td class="text-right text-slate-400">${formatCurrency(row.openingBalance)}</td>
                     <td class="text-right">${formatCurrency(row.payment)}</td>
                     <td class="text-right">${formatCurrency(row.principalPortion)}</td>
                     <td class="text-right">${formatCurrency(row.interest)}</td>
-                    <td class="text-right text-slate-500">${formatCurrency(row.endingBalance)}</td>
+                    <td class="text-right text-slate-400">${formatCurrency(row.endingBalance)}</td>
                 </tr>`;
             });
 
@@ -403,8 +403,8 @@
                     <td class="text-right">${formatCurrency(bank.principal)}</td>
                     <td class="text-right">${(bank.annualRate * 100).toFixed(2)}%</td>
                     <td class="text-right">${bank.years}</td>
-                    <td class="text-right text-slate-500">${formatCurrency(result.payment)}</td>
-                    <td class="text-right text-slate-500">${formatCurrency(totalInterest)}</td>
+                    <td class="text-right text-slate-100">${formatCurrency(result.payment)}</td>
+                    <td class="text-right text-slate-100">${formatCurrency(totalInterest)}</td>
                 </tr>`;
                 bankComparisonRaw += `${bank.bank}\t${bank.principal}\t${bank.annualRate}\t${bank.years}\t${Math.round(result.payment)}\t${Math.round(totalInterest)}\n`;
             });
@@ -422,8 +422,8 @@
                 html += `<tr>
                     <td class="text-right">${years}</td>
                     <td class="text-right">${years * 12}</td>
-                    <td class="text-right text-slate-500">${formatCurrency(result.payment)}</td>
-                    <td class="text-right text-slate-500">${formatCurrency(totalInterest)}</td>
+                    <td class="text-right text-slate-100">${formatCurrency(result.payment)}</td>
+                    <td class="text-right text-slate-100">${formatCurrency(totalInterest)}</td>
                 </tr>`;
                 sensitivityRaw += `${years}\t${years * 12}\t${Math.round(result.payment)}\t${Math.round(totalInterest)}\n`;
             });
