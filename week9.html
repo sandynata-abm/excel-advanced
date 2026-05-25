@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pertemuan 9: What-If Analysis & Risk Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .excel-table th { background-color: #0f172a; color: white; padding: 10px; border: 1px solid #cbd5e1; text-align: left; font-size: 0.75rem; white-space: nowrap; }
+        .excel-table td { border: 1px solid #cbd5e1; padding: 7px; font-family: 'Consolas', monospace; font-size: 0.72rem; vertical-align: middle; }
+        .excel-table tr:nth-child(even) { background-color: #f8fafc; }
+        .section-card { border-top: 4px solid #0f172a; transition: all 0.25s ease; }
+        .section-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+        .feature-pill { border: 1px solid #cbd5e1; background: white; border-radius: 9999px; padding: 4px 10px; font-size: 0.68rem; font-weight: 700; color: #334155; display: inline-flex; align-items: center; gap: 6px; }
+        .formula-box { background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%); border: 1px dashed #2563eb; }
+        .finance-card { background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; }
+        .mini-stat { background: #0f172a; color: white; }
+        .shadow-finance { box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); }
+    </style>
+</head>
+<body class="bg-slate-100 p-4 md:p-8 font-sans">
+
+    <div class="max-w-7xl mx-auto bg-white shadow-finance rounded-2xl overflow-hidden">
+        <div class="bg-gradient-to-r from-[#0f172a] via-[#1e3a8a] to-[#0f766e] p-10 text-white relative overflow-hidden">
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+                <div class="max-w-3xl">
+                    <p class="text-xs uppercase tracking-[0.3em] text-sky-200/90 font-bold">Latihan Pertemuan 9</p>
+                    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mt-2">What-If Analysis & Risk Simulation</h1>
+                    <p class="text-lg opacity-90 mt-4 max-w-2xl">Analisis sensitivitas, Goal Seek, dan Data Table untuk pengambilan keputusan manajerial.</p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <span class="bg-white/15 border border-white/20 px-4 py-2 rounded-full text-sm font-semibold">Durasi: 90 Menit</span>
+                    <span class="bg-emerald-400/20 border border-emerald-300/30 px-4 py-2 rounded-full text-sm font-semibold">Fokus: What-If & Risk</span>
+                </div>
+            </div>
+            <div class="absolute right-6 top-6 text-[8rem] font-black italic opacity-10 select-none leading-none">W9</div>
+            <div class="absolute -right-16 -bottom-20 w-72 h-72 rounded-full bg-cyan-400/20 blur-3xl"></div>
+            <div class="absolute left-1/3 -top-20 w-72 h-72 rounded-full bg-blue-400/20 blur-3xl"></div>
+        </div>
+
+        <div class="p-6 md:p-8 border-b bg-slate-50 grid md:grid-cols-4 gap-4">
+            <div class="finance-card p-4 rounded-xl section-card">
+                <p class="text-[0.65rem] font-bold uppercase text-slate-400">Kasus A</p>
+                <p class="font-bold text-slate-800 mt-1">Target Profit (Goal Seek)</p>
+                <p class="text-xs text-slate-500 mt-2">Cari berapa unit yang harus terjual agar tercapai profit bersih Rp 1.000.000.000.</p>
+            </div>
+            <div class="finance-card p-4 rounded-xl section-card" style="border-top-color:#2563eb;">
+                <p class="text-[0.65rem] font-bold uppercase text-slate-400">Kasus B</p>
+                <p class="font-bold text-slate-800 mt-1">Sensitivitas 1-Variabel</p>
+                <p class="text-xs text-slate-500 mt-2">Data Table satu-variabel untuk variasi harga jual (+5%, +10%, +15%).</p>
+            </div>
+            <div class="finance-card p-4 rounded-xl section-card" style="border-top-color:#0f766e;">
+                <p class="text-[0.65rem] font-bold uppercase text-slate-400">Kasus C</p>
+                <p class="font-bold text-slate-800 mt-1">Sensitivitas 2-Variabel</p>
+                <p class="text-xs text-slate-500 mt-2">Data Table dua-variabel: Harga Jual vs Biaya Produksi.</p>
+            </div>
+            <div class="finance-card p-4 rounded-xl section-card" style="border-top-color:#f59e0b;">
+                <p class="text-[0.65rem] font-bold uppercase text-slate-400">Kasus D</p>
+                <p class="font-bold text-slate-800 mt-1">Rekomendasi Bisnis</p>
+                <p class="text-xs text-slate-500 mt-2">Simpulkan skenario paling aman berdasarkan tabel sensitivitas.</p>
+            </div>
+        </div>
+
+        <div class="p-6 md:p-8 grid lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1 space-y-6">
+                <section>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center mb-4">
+                        <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">1</span>
+                        Komponen Materi
+                    </h2>
+                    <div class="space-y-3 text-sm text-slate-600">
+                        <div class="formula-box p-4 rounded-xl">
+                            <p class="text-xs font-bold text-blue-800 uppercase mb-1">Target Seeking</p>
+                            <p class="text-xs leading-relaxed text-blue-700">Teknik mencari input yang menghasilkan target finansial tertentu (Goal Seek).</p>
+                        </div>
+                        <div class="formula-box p-4 rounded-xl">
+                            <p class="text-xs font-bold text-blue-800 uppercase mb-1">Sensitivity Analysis</p>
+                            <p class="text-xs leading-relaxed text-blue-700">Mengukur dampak perubahan variabel kunci terhadap profit.</p>
+                        </div>
+                        <div class="formula-box p-4 rounded-xl">
+                            <p class="text-xs font-bold text-blue-800 uppercase mb-1">Scenario Modeling</p>
+                            <p class="text-xs leading-relaxed text-blue-700">Membangun beberapa skenario pasar untuk prediksi hasil.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center mb-4">
+                        <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">2</span>
+                        Rumus & Alat
+                    </h2>
+                    <div class="space-y-3">
+                        <div class="p-4 rounded-xl border border-slate-200 bg-white">
+                            <p class="text-xs font-bold text-slate-800 mb-1">Goal Seek</p>
+                            <p class="text-xs text-slate-600">Menetapkan target sel dan mengubah sel input untuk mencapai nilai target.</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 bg-white">
+                            <p class="text-xs font-bold text-slate-800 mb-1">Data Table (1-var / 2-var)</p>
+                            <p class="text-xs text-slate-600">Ringkasan hasil untuk banyak variasi sekaligus.</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                            <p class="text-xs font-bold text-slate-800 mb-1">Referensi Sel</p>
+                            <p class="text-xs text-slate-600">Gunakan referensi absolut ($) saat diperlukan agar Data Table bekerja otomatis.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center mb-4">
+                        <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">3</span>
+                        Optimasi Tampilan
+                    </h2>
+                    <div class="space-y-2 text-xs text-slate-600">
+                        <p class="feature-pill">Data Table Sederhana</p>
+                        <p class="feature-pill">Goal Seek Demo</p>
+                        <p class="feature-pill">Format Persen & Mata Uang</p>
+                        <p class="feature-pill">Referensi Absolut ($)</p>
+                    </div>
+                    <div class="mt-4 p-4 rounded-xl bg-slate-900 text-slate-100">
+                        <p class="text-xs font-bold uppercase tracking-wide text-slate-300">Contoh Formula</p>
+                        <p class="text-xs mt-2 font-mono leading-relaxed">=ProfitCell</p>
+                        <p class="text-xs mt-1 font-mono leading-relaxed">(Gunakan Goal Seek untuk mengubah Units Sold)</p>
+                    </div>
+                </section>
+            </div>
+
+            <div class="lg:col-span-2 space-y-6">
+                <section class="section-card bg-white rounded-2xl p-6 border border-slate-200">
+                    <h2 class="text-xl font-bold text-slate-900 mb-4">Rincian Aktivitas (90 Menit)</h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-xl bg-blue-50 border border-blue-100">
+                            <p class="text-xs font-bold uppercase text-blue-800 mb-2">30 Menit - Teori & Demo</p>
+                            <ol class="list-decimal ml-4 text-xs text-blue-700 space-y-2 leading-relaxed">
+                                <li>Penjelasan Goal Seek dan Data Table.</li>
+                                <li>Demo mencari Unit Sold untuk target profit (Goal Seek).</li>
+                                <li>Demo Data Table satu-variabel untuk variasi harga.</li>
+                            </ol>
+                        </div>
+                        <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-100">
+                            <p class="text-xs font-bold uppercase text-emerald-800 mb-2">60 Menit - Praktik Mandiri</p>
+                            <ol class="list-decimal ml-4 text-xs text-emerald-700 space-y-2 leading-relaxed">
+                                <li>Kasus A: Goal Seek target profit Rp 1.000.000.000.</li>
+                                <li>Kasus B: Data Table 1-variabel (+5%, +10%, +15%).</li>
+                                <li>Kasus C: Data Table 2-variabel (Harga vs Biaya).</li>
+                                <li>Kasus D: Rekomendasi berdasarkan sensitivitas.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-card bg-white rounded-2xl p-6 border border-slate-200">
+                    <div class="flex flex-col md:flex-row justify-between md:items-center gap-3 mb-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900">Kasus & Dataset</h2>
+                            <p class="text-xs text-slate-500 italic">Salin data ke Excel mulai dari sel A1 lalu gunakan Goal Seek / Data Table sesuai petunjuk.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6 mb-6">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-xl border border-slate-200">
+                                    <div class="flex items-center justify-between">
+                                        <strong>Kasus A — Goal Seek</strong>
+                                    </div>
+                                <pre id="tsv-kasusA" class="mt-2 text-xs text-slate-700 overflow-x-auto">Unit Price	150000
+Variable Cost per Unit	90000
+Fixed Cost	50000000
+Units Sold	10000
+Profit	= ?</pre>
+                            </div>
+
+                            <div class="bg-white p-4 rounded-xl border border-slate-200">
+                                <div class="flex items-center justify-between">
+                                        <strong>Kasus B — Sensitivitas 1-Variabel</strong>
+                                </div>
+                                <pre id="tsv-kasusB" class="mt-2 text-xs text-slate-700 overflow-x-auto">Unit Price	150000
+Variable Cost per Unit	90000
+Fixed Cost	50000000
+Units Sold	20000
+
+Price Increase	5%	10%	15%
+Adjusted Price	= ?
+Profit	= ?</pre>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-xl border border-slate-200">
+                                <div class="flex items-center justify-between">
+                                    <strong>Kasus C — Sensitivitas 2-Variabel</strong>
+                                </div>
+                                <pre id="tsv-kasusC" class="mt-2 text-xs text-slate-700 overflow-x-auto">Unit Price	150000
+Variable Cost per Unit	90000
+Fixed Cost	50000000
+Units Sold	20000
+
+Price Variations	-5%	0%	5%
+Cost Variations	-5%	0%	5%
+
+                                </pre>
+                            </div>
+
+                            <div class="bg-white p-4 rounded-xl border border-slate-200">
+                                <div class="flex items-center justify-between">
+                                    <strong>Kasus D — Scenario Manager</strong>
+                                </div>
+                                <ul>
+  <li><strong>Skenario 1:</strong> Dampak Inflasi</li>
+  <li><strong>Skenario 2:</strong> Dampak Promo</li>
+  <li><strong>Tujuan:</strong> Membandingkan pengaruh kedua skenario terhadap profit</li>
+  <li><strong>Keputusan:</strong> Memilih strategi yang paling aman dan menguntungkan</li>
+</ul>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-amber-50 border border-amber-200">
+                            <p class="text-xs font-bold text-amber-800 uppercase mb-1">Target Akhir</p>
+                            <p class="text-xs text-amber-700 leading-relaxed">Mahasiswa dinyatakan berhasil jika dapat menggunakan Goal Seek untuk menemukan Units Sold yang diperlukan, membuat Data Table 1-var dan 2-var, serta menyusun rekomendasi berbasis sensitivitas.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="p-4 bg-slate-900 text-slate-400 text-center text-xs border-t border-slate-800">
+            Excel Advanced - Pertemuan 9 What-If Analysis & Risk Simulation.
+        </div>
+    </div>
+</body>
+</html>
