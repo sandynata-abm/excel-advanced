@@ -48,6 +48,7 @@ Perilaku helper:
 - Jangan menyisipkan formula Excel otomatis ke data salin kecuali memang bagian dari instruksi latihan.
 
 ## Aturan UI dan Konten
+- gunakan style seperti pada file week8.html, week9.html sebagai referfensi untuk struktur dan gaya.
 - Pertahankan struktur komponen latihan: header, instruksi, tabel referensi, area latihan, dan tombol salin.
 - Jaga kompatibilitas desktop dan mobile seperti file yang sudah ada.
 - Hindari perubahan visual besar jika tidak diminta.
