@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pertemuan 10: SUMPRODUCT & Multi-Criteria Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .excel-table th { background-color: #0f172a; color: white; padding: 10px; border: 1px solid #cbd5e1; text-align: left; font-size: 0.75rem; white-space: nowrap; }
+        .excel-table td { border: 1px solid #cbd5e1; padding: 7px; font-family: 'Consolas', monospace; font-size: 0.72rem; vertical-align: middle; }
+        .excel-table tr:nth-child(even) { background-color: #f8fafc; }
+        .section-card { border-top: 4px solid #0f172a; transition: all 0.25s ease; }
+        .section-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+        .feature-pill { border: 1px solid #cbd5e1; background: white; border-radius: 9999px; padding: 4px 10px; font-size: 0.68rem; font-weight: 700; color: #334155; display: inline-flex; align-items: center; gap: 6px; }
+        .formula-box { background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%); border: 1px dashed #2563eb; }
+        .finance-card { background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; }
+        .mini-stat { background: #0f172a; color: white; }
+        .shadow-finance { box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); }
+        .copy-btn { background: #0f172a; color: white; padding: 5px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .copy-btn:hover { background: #1e293b; }
+    </style>
+</head>
+<body class="bg-slate-100 p-4 md:p-8 font-sans">
+
+    <div class="max-w-7xl mx-auto bg-white shadow-finance rounded-2xl overflow-hidden">
+        <div class="bg-gradient-to-r from-[#0f172a] via-[#1e3a8a] to-[#0f766e] p-10 text-white relative overflow-hidden">
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+                <div class="max-w-3xl">
+                    <p class="text-xs uppercase tracking-[0.3em] text-sky-200/90 font-bold">Latihan Pertemuan 10</p>
+                    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mt-2">SUMPRODUCT & Multi-Criteria Analytics</h1>
+                    <p class="text-lg opacity-90 mt-4 max-w-2xl">Perkalian array, filter multi-kriteria, dan pengambilan data matriks tanpa kolom bantu.</p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <span class="bg-white/15 border border-white/20 px-4 py-2 rounded-full text-sm font-semibold">Durasi: 90 Menit</span>
+                    <span class="bg-emerald-400/20 border border-emerald-300/30 px-4 py-2 rounded-full text-sm font-semibold">Fokus: Array & SUMPRODUCT</span>
+                </div>
+            </div>
+            <div class="absolute right-6 top-6 text-[8rem] font-black italic opacity-10 select-none leading-none">W10</div>
+            <div class="absolute -right-16 -bottom-20 w-72 h-72 rounded-full bg-cyan-400/20 blur-3xl"></div>
+            <div class="absolute left-1/3 -top-20 w-72 h-72 rounded-full bg-blue-400/20 blur-3xl"></div>
+        </div>
+
+        <div class="p-6 md:p-8 border-b bg-slate-50 grid md:grid-cols-4 gap-4">
+            <div class="finance-card p-4 rounded-xl section-card">
+                <p class="text-[0.65rem] font-bold uppercase text-slate-400">Kasus A</p>
+                <p class="font-bold text-slate-800 mt-1">Basic Revenue (No Helper Column)</p>
+                <p class="text-xs text-slate-500 mt-2">Gunakan SUMPRODUCT untuk total pendapatan langsung dari dua range.</p>
+            </div>
+            <div class="finance-card p-4 rounded-xl section-card" style="border-top-color:#2563eb;">
+                <p class="text-[0.65rem] font-bold uppercase text-slate-400">Kasus B</p>
+                <p class="font-bold text-slate-800 mt-1">Complex Multi-Criteria Filter</p>
+                <p class="text-xs text-slate-500 mt-2">Filter dengan array legacy: Elektronik, Jakarta, jam &gt; 17:00.</p>
+            </div>
+            <div class="finance-card p-4 rounded-xl section-card" style="border-top-color:#0f766e;">
+                <p class="text-[0.65rem] font-bold uppercase text-slate-400">Kasus C</p>
+                <p class="font-bold text-slate-800 mt-1">Weighted Average HPP</p>
+                <p class="text-xs text-slate-500 mt-2">Rata-rata tertimbang persediaan tanpa kolom bantu.</p>
+            </div>
+            <div class="finance-card p-4 rounded-xl section-card" style="border-top-color:#f59e0b;">
+                <p class="text-[0.65rem] font-bold uppercase text-slate-400">Kasus D</p>
+                <p class="font-bold text-slate-800 mt-1">Cross-Tab Retrieval</p>
+                <p class="text-xs text-slate-500 mt-2">Ambil nilai dari matriks dua arah (Bulan × Wilayah) tanpa INDEX-MATCH.</p>
+            </div>
+        </div>
+
+        <div class="p-6 md:p-8 grid lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1 space-y-6">
+                <section>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center mb-4">
+                        <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">1</span>
+                        Komponen Materi
+                    </h2>
+                    <div class="space-y-3 text-sm text-slate-600">
+                        <div class="formula-box p-4 rounded-xl">
+                            <p class="text-xs font-bold text-blue-800 uppercase mb-1">SUMPRODUCT Dasar</p>
+                            <p class="text-xs leading-relaxed text-blue-700">Mengalikan range1[i] × range2[i] lalu menjumlahkan semua hasil — tanpa kolom bantu.</p>
+                        </div>
+                        <div class="formula-box p-4 rounded-xl">
+                            <p class="text-xs font-bold text-blue-800 uppercase mb-1">Array Legacy Filter ( * )</p>
+                            <p class="text-xs leading-relaxed text-blue-700">Menggabungkan beberapa kriteria dengan operator perkalian (*) untuk filtering multi-kriteria.</p>
+                        </div>
+                        <div class="formula-box p-4 rounded-xl">
+                            <p class="text-xs font-bold text-blue-800 uppercase mb-1">Rata-rata Tertimbang</p>
+                            <p class="text-xs leading-relaxed text-blue-700">Kombinasi SUMPRODUCT dan SUM untuk menghitung weighted average pada persediaan.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center mb-4">
+                        <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">2</span>
+                        Rumus & Alat
+                    </h2>
+                    <div class="space-y-3">
+                        <div class="p-4 rounded-xl border border-slate-200 bg-white">
+                            <p class="text-xs font-bold text-slate-800 mb-1">SUMPRODUCT Dasar</p>
+                            <p class="text-xs text-slate-600">=SUMPRODUCT(Range1, Range2)</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 bg-white">
+                            <p class="text-xs font-bold text-slate-800 mb-1">Multi-Criteria Array</p>
+                            <p class="text-xs text-slate-600">=SUMPRODUCT((kriteria1)*(kriteria2)*(...)*(range_nilai))</p>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                            <p class="text-xs font-bold text-slate-800 mb-1">Weighted Average</p>
+                            <p class="text-xs text-slate-600">=SUMPRODUCT(Range_Stok, Range_HPP) / SUM(Range_Stok)</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center mb-4">
+                        <span class="bg-slate-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">3</span>
+                        Optimasi Tampilan
+                    </h2>
+                    <div class="space-y-2 text-xs text-slate-600">
+                        <p class="feature-pill">No Helper Column</p>
+                        <p class="feature-pill">Array Legacy</p>
+                        <p class="feature-pill">Filter Multi-Kriteria</p>
+                        <p class="feature-pill">Cross-Tab tanpa INDEX-MATCH</p>
+                    </div>
+                    <div class="mt-4 p-4 rounded-xl bg-slate-900 text-slate-100">
+                        <p class="text-xs font-bold uppercase tracking-wide text-slate-300">Contoh Formula</p>
+                        <p class="text-xs mt-2 font-mono leading-relaxed">=SUMPRODUCT(B2:B10, C2:C10) → total pendapatan</p>
+                        <p class="text-xs mt-1 font-mono leading-relaxed">=SUMPRODUCT((A2:A100="Elektronik")*(B2:B100="Jakarta")*(C2:C100>17/24)*(D2:D100))</p>
+                    </div>
+                </section>
+            </div>
+
+            <div class="lg:col-span-2 space-y-6">
+                <section class="section-card bg-white rounded-2xl p-6 border border-slate-200">
+                    <h2 class="text-xl font-bold text-slate-900 mb-4">Rincian Aktivitas (90 Menit)</h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-xl bg-blue-50 border border-blue-100">
+                            <p class="text-xs font-bold uppercase text-blue-800 mb-2">30 Menit - Teori & Demo</p>
+                            <ol class="list-decimal ml-4 text-xs text-blue-700 space-y-2 leading-relaxed">
+                                <li>Konsep array dan cara kerja SUMPRODUCT.</li>
+                                <li>Demo Kasus A: total pendapatan tanpa kolom bantu.</li>
+                                <li>Demo Kasus B: filter multi-kriteria dengan operator *.</li>
+                                <li>Pengenalan evaluasi array (F9) untuk debugging.</li>
+                            </ol>
+                        </div>
+                        <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-100">
+                            <p class="text-xs font-bold uppercase text-emerald-800 mb-2">60 Menit - Praktik Mandiri</p>
+                            <ol class="list-decimal ml-4 text-xs text-emerald-700 space-y-2 leading-relaxed">
+                                <li>Kasus A: total pendapatan 5 transaksi.</li>
+                                <li>Kasus B: filter penjualan Elektronik, Jakarta, jam &gt; 17:00.</li>
+                                <li>Kasus C: weighted average HPP dari 4 produk.</li>
+                                <li>Kasus D: ambil nilai Januari-Surabaya dari matriks.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-card bg-white rounded-2xl p-6 border border-slate-200">
+                    <div class="flex flex-col md:flex-row justify-between md:items-center gap-3 mb-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900">Dataset Latihan SUMPRODUCT</h2>
+                            <p class="text-xs text-slate-500 italic">Salin data ke Excel mulai dari sel A1 untuk berlatih SUMPRODUCT dan array filtering.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6 mb-6">
+                        <!-- Kasus A -->
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-sm font-bold text-slate-800">Kasus A — Basic Revenue Analytics</p>
+                                <div class="flex gap-2">
+                                    <button onclick="copyToClipboard('kasusA')" class="copy-btn">📋 Salin Data</button>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white">
+                                <table class="w-full excel-table" id="kasusA">
+                                    <thead>
+                                        <tr>
+                                            <th>Produk</th><th>Jumlah</th><th>Harga Satuan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>TV</td><td class="text-right">5</td><td class="text-right">2.000.000</td></tr>
+                                        <tr><td>Laptop</td><td class="text-right">3</td><td class="text-right">7.500.000</td></tr>
+                                        <tr><td>Kulkas</td><td class="text-right">2</td><td class="text-right">3.200.000</td></tr>
+                                        <tr><td>AC</td><td class="text-right">4</td><td class="text-right">2.800.000</td></tr>
+                                        <tr><td>Mesin Cuci</td><td class="text-right">1</td><td class="text-right">1.800.000</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="text-xs text-blue-600 font-semibold mt-2">💡 Gunakan =SUMPRODUCT(B2:B6, C2:C6)</p>
+                        </div>
+
+                        <!-- Kasus B -->
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-sm font-bold text-slate-800">Kasus B — Complex Multi-Criteria Filter</p>
+                                <div class="flex gap-2">
+                                    <button onclick="copyToClipboard('kasusB')" class="copy-btn">📋 Salin Data</button>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-500 italic mb-2">Filter: Elektronik, Cabang Jakarta, Jam Transaksi &gt; 17:00</p>
+                            <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white">
+                                <table class="w-full excel-table" id="kasusB">
+                                    <thead>
+                                        <tr>
+                                            <th>Kategori</th><th>Cabang</th><th>Jam Transaksi</th><th>Total Penjualan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>Elektronik</td><td>Jakarta</td><td>18:30</td><td class="text-right">15.000.000</td></tr>
+                                        <tr><td>Fashion</td><td>Bandung</td><td>14:15</td><td class="text-right">5.000.000</td></tr>
+                                        <tr><td>Elektronik</td><td>Jakarta</td><td>19:45</td><td class="text-right">22.000.000</td></tr>
+                                        <tr><td>Makanan</td><td>Jakarta</td><td>10:00</td><td class="text-right">3.500.000</td></tr>
+                                        <tr><td>Elektronik</td><td>Surabaya</td><td>20:10</td><td class="text-right">18.000.000</td></tr>
+                                        <tr><td>Elektronik</td><td>Jakarta</td><td>16:30</td><td class="text-right">14.000.000</td></tr>
+                                        <tr><td>Fashion</td><td>Jakarta</td><td>18:00</td><td class="text-right">8.000.000</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="text-xs text-blue-600 font-semibold mt-2">💡 =SUMPRODUCT((A2:A8="Elektronik")*(B2:B8="Jakarta")*(HOUR(C2:C8)+MINUTE(C2:C8)/60>17)*(D2:D8))</p>
+                        </div>
+
+                        <!-- Kasus C -->
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-sm font-bold text-slate-800">Kasus C — Weighted Average HPP</p>
+                                <div class="flex gap-2">
+                                    <button onclick="copyToClipboard('kasusC')" class="copy-btn">📋 Salin Data</button>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white">
+                                <table class="w-full excel-table" id="kasusC">
+                                    <thead>
+                                        <tr>
+                                            <th>Barang</th><th>Stok (Unit)</th><th>HPP per Unit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>Beras</td><td class="text-right">200</td><td class="text-right">12.000</td></tr>
+                                        <tr><td>Minyak Goreng</td><td class="text-right">150</td><td class="text-right">18.000</td></tr>
+                                        <tr><td>Gula</td><td class="text-right">300</td><td class="text-right">15.000</td></tr>
+                                        <tr><td>Telur</td><td class="text-right">100</td><td class="text-right">28.000</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="text-xs text-blue-600 font-semibold mt-2">💡 =SUMPRODUCT(B2:B5, C2:C5) / SUM(B2:B5)</p>
+                        </div>
+
+                        <!-- Kasus D -->
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="text-sm font-bold text-slate-800">Kasus D — Cross-Tabulation Retrieval</p>
+                                <div class="flex gap-2">
+                                    <button onclick="copyToClipboard('kasusD')" class="copy-btn">📋 Salin Data</button>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-500 italic mb-2">Tugas: Ambil nilai penjualan untuk Bulan Januari dan Wilayah Surabaya.</p>
+                            <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white">
+                                <table class="w-full excel-table" id="kasusD">
+                                    <thead>
+                                        <tr>
+                                            <th>Bulan \ Wilayah</th><th>Jakarta</th><th>Surabaya</th><th>Bandung</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>Januari</td><td class="text-right">12.000.000</td><td class="text-right">9.500.000</td><td class="text-right">7.200.000</td></tr>
+                                        <tr><td>Februari</td><td class="text-right">14.500.000</td><td class="text-right">11.000.000</td><td class="text-right">8.300.000</td></tr>
+                                        <tr><td>Maret</td><td class="text-right">13.200.000</td><td class="text-right">10.200.000</td><td class="text-right">7.900.000</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="text-xs text-blue-600 font-semibold mt-2">💡 =SUMPRODUCT((A2:A4="Januari")*(B1:D1="Surabaya")*(B2:D4))</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-amber-50 border border-amber-200">
+                        <p class="text-xs font-bold text-amber-800 uppercase mb-1">Target Akhir</p>
+                        <p class="text-xs text-amber-700 leading-relaxed">Mahasiswa dapat menggunakan SUMPRODUCT untuk perkalian array, filtering multi-kriteria, weighted average, dan cross-tab retrieval tanpa kolom bantu atau fungsi INDEX-MATCH.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="p-4 bg-slate-900 text-slate-400 text-center text-xs border-t border-slate-800">
+            Excel Intermediate-Advanced – Pertemuan 10 SUMPRODUCT & Multi-Criteria Analytics.
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(tableId) {
+            const table = document.getElementById(tableId);
+            if (!table) return;
+
+            let data = '';
+            const rows = table.querySelectorAll('tr');
+            rows.forEach((row, rowIndex) => {
+                const cols = row.querySelectorAll('th, td');
+                const rowData = [];
+                cols.forEach(col => {
+                    let text = col.innerText.trim();
+                    // Format angka: remove dots for numbers (but keep for text)
+                    if (text.replace(/\./g, '').replace(/\s/g, '').match(/^\d+$/)) {
+                        text = text.replace(/\./g, '');
+                    }
+                    rowData.push(text);
+                });
+                data += rowData.join('\t') + '\n';
+            });
+
+            // Remove trailing newline
+            data = data.trim();
+
+            // Copy to clipboard
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(data).then(() => {
+                    alert('Data berhasil disalin! Tempel di Excel mulai dari sel A1.');
+                }).catch(() => {
+                    fallbackCopy(data);
+                });
+            } else {
+                fallbackCopy(data);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('Data berhasil disalin! Tempel di Excel mulai dari sel A1.');
+        }
+    </script>
+</body>
+</html>
