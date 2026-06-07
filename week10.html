@@ -168,6 +168,7 @@
                                     <button onclick="copyToClipboard('kasusA')" class="copy-btn">📋 Salin Data</button>
                                 </div>
                             </div>
+                            <p class="text-xs text-slate-500 mb-2">Hitung total pendapatan dari seluruh toko. Biasanya mahasiswa membuat kolom baru "Total" (Jumlah x Harga) baru kemudian di-SUM</p>
                             <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white">
                                 <table class="w-full excel-table" id="kasusA">
                                     <thead>
@@ -184,7 +185,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <p class="text-xs text-blue-600 font-semibold mt-2">💡 Gunakan =SUMPRODUCT(B2:B6, C2:C6)</p>
+                            <p class="text-xs text-blue-600 font-semibold mt-2">💡 Gunakan =SUMPRODUCT(Range_Jumlah, Range_Harga)</p>
                         </div>
 
                         <!-- Kasus B -->
@@ -195,7 +196,7 @@
                                     <button onclick="copyToClipboard('kasusB')" class="copy-btn">📋 Salin Data</button>
                                 </div>
                             </div>
-                            <p class="text-xs text-slate-500 italic mb-2">Filter: Elektronik, Cabang Jakarta, Jam Transaksi &gt; 17:00</p>
+                            <p class="text-xs text-slate-500 mb-2">Hitung total nominal penjualan hanya untuk Kategori: "Elektronik", di Cabang: "Jakarta", pada jam operasional di atas pukul 17:00</p>
                             <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white">
                                 <table class="w-full excel-table" id="kasusB">
                                     <thead>
@@ -214,7 +215,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <p class="text-xs text-blue-600 font-semibold mt-2">💡 =SUMPRODUCT((A2:A8="Elektronik")*(B2:B8="Jakarta")*(HOUR(C2:C8)+MINUTE(C2:C8)/60>17)*(D2:D8))</p>
+                            <p class="text-xs text-blue-600 font-semibold mt-2">💡 =SUMPRODUCT((Range_Kategori="Elektronik")*(Range_Cabang="Jakarta")*(Range_Jam>17/24)*(Range_Total))</p>
                         </div>
 
                         <!-- Kasus C -->
@@ -225,6 +226,7 @@
                                     <button onclick="copyToClipboard('kasusC')" class="copy-btn">📋 Salin Data</button>
                                 </div>
                             </div>
+                             <p class="text-xs text-slate-500 mb-2">Dalam bisnis retail, harga beli barang sering berubah. Hitung Rata-rata Tertimbang dari Harga Pokok Penjualan (HPP).</p>
                             <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white">
                                 <table class="w-full excel-table" id="kasusC">
                                     <thead>
@@ -240,7 +242,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <p class="text-xs text-blue-600 font-semibold mt-2">💡 =SUMPRODUCT(B2:B5, C2:C5) / SUM(B2:B5)</p>
+                            <p class="text-xs text-blue-600 font-semibold mt-2">💡 =SUMPRODUCT(Range_Stok, Range_HPP_Satuan) / SUM(Range_Stok)</p>
                         </div>
 
                         <!-- Kasus D -->
@@ -251,7 +253,7 @@
                                     <button onclick="copyToClipboard('kasusD')" class="copy-btn">📋 Salin Data</button>
                                 </div>
                             </div>
-                            <p class="text-xs text-slate-500 italic mb-2">Tugas: Ambil nilai penjualan untuk Bulan Januari dan Wilayah Surabaya.</p>
+                            <p class="text-xs text-slate-500 mb-2">Mengambil nilai dari tabel dua arah (Matriks). Misal: Cari total penjualan di baris "Bulan: Januari" dan kolom "Wilayah: Surabaya"</p>
                             <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white">
                                 <table class="w-full excel-table" id="kasusD">
                                     <thead>
@@ -266,7 +268,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <p class="text-xs text-blue-600 font-semibold mt-2">💡 =SUMPRODUCT((A2:A4="Januari")*(B1:D1="Surabaya")*(B2:D4))</p>
+                            <p class="text-xs text-blue-600 font-semibold mt-2">💡 =SUMPRODUCT((Range_Bulan="Januari")*(Range_Wilayah="Surabaya")*(Range_Penjualan))</p>
                         </div>
                     </div>
 
